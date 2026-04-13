@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chroxel
 
-## Getting Started
+Aplicación web construida con Next.js 16 y TypeScript, diseñada como una landing page moderna que usa componentes reutilizables y animaciones con GSAP.
 
-First, run the development server:
+## Descripción del proyecto
+
+- Framework: `Next.js 16` con el enrutador `app/`.
+- Lenguajes: `TypeScript`, `JavaScript` y `CSS`.
+- Estilos: `Tailwind CSS` y `PostCSS`.
+- Animaciones: `gsap` y `@gsap/react` para efectos visuales en secciones de la página.
+
+## Estructura principal
+
+- `app/` — ruta de la aplicación de Next.js, incluyendo el layout global y la página principal.
+  - `app/page.tsx` — página de inicio.
+  - `app/layout.tsx` — plantilla global de layout.
+  - `app/globals.css` — estilos globales.
+- `src/components/` — componentes UI compartidos.
+  - `layout/` — navegación y footer.
+  - `sections/` — secciones de contenido como `Hero`, `Process`, `Projects` y `Services`.
+  - `ui/` — componentes reutilizables de interfaz.
+- `lib/utils.ts` — utilidades y helpers.
+
+## Cómo ejecutar el proyecto
+
+1. Instala dependencias:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Ejecuta el servidor de desarrollo:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Abre el navegador en:
 
-## Learn More
+```text
+http://localhost:3000
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Scripts disponibles
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `pnpm dev` — inicia el servidor de desarrollo.
+- `pnpm build` — genera la versión de producción.
+- `pnpm start` — ejecuta la aplicación en modo producción tras compilarla.
+- `pnpm lint` — ejecuta ESLint para revisar la calidad del código.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Consideraciones de desarrollo
 
-## Deploy on Vercel
+- La aplicación usa el enrutador `app` de Next.js, por lo que los componentes de página y el layout principal se gestionan desde `app/`.
+- Los estilos globales se definen en `app/globals.css` y pueden extenderse agregando clases de Tailwind en los componentes.
+- La navegación y las secciones de contenido están desacopladas en componentes separados para facilitar la mantenibilidad.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Siguientes pasos
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Añadir tests si se desea cubrir componentes y lógica.
+- Extender la página con nuevas secciones o páginas adicionales.
+- Configurar despliegue en Vercel, Netlify o cualquier plataforma compatible con Next.js.
