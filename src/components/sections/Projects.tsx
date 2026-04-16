@@ -4,6 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +15,7 @@ const PROJECTS_DATA = [
     title: "Nexus Banking",
     img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
     zIndex: "z-[25]",
+    slug: "nexus-banking",
   },
   {
     id: "proj-2",
@@ -21,6 +23,7 @@ const PROJECTS_DATA = [
     title: "Omni Analytics",
     img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
     zIndex: "z-[20]",
+    slug: "omni-analytics",
   },
   {
     id: "proj-3",
@@ -173,9 +176,10 @@ export default function Projects() {
 
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 relative z-20">
         {PROJECTS_DATA.map((proj) => (
-          <div
+          <Link
             key={proj.id}
             id={proj.id}
+            href={`/proyecto/${proj.slug}`}
             className={`project-item group relative aspect-video bg-luxury-card rounded-3xl overflow-hidden ${proj.zIndex} border border-luxury-border shadow-md hover:shadow-2xl transition-shadow duration-500`}
           >
             <div className="absolute inset-0 bg-gradient-to-t from-luxury-ink/90 via-luxury-ink/20 to-transparent z-10 opacity-80 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -193,7 +197,7 @@ export default function Projects() {
                 {proj.title}
               </h3>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>
