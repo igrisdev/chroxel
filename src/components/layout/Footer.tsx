@@ -24,7 +24,7 @@ export default function Footer() {
     }
 
     // Reemplaza con el número real de tu agencia
-    const numeroAgencia = "1234567890";
+    const numeroAgencia = "3178784022";
     const mensaje = formatWhatsAppMessage({
       name: formData.name,
       contact: formData.contactInfo,
@@ -41,7 +41,7 @@ export default function Footer() {
     }
 
     // Reemplaza con el correo de tu agencia
-    const correoAgencia = "hello@chroxel.com";
+    const correoAgencia = "johan.manuel.alvarez.pinta@gmail.com";
     const asunto = encodeURIComponent(`Nuevo Proyecto - ${formData.name}`);
     const cuerpo = encodeURIComponent(
       formatEmailBody({
@@ -169,7 +169,7 @@ export default function Footer() {
           CHROXEL
         </div>
         <div className="flex space-x-8 text-sm font-display tracking-widest text-white/50 mb-6 md:mb-0">
-          <Link href="#" className="hover:text-luxury-accent transition-colors">
+          {/* <Link href="#" className="hover:text-luxury-accent transition-colors">
             LINKEDIN
           </Link>
           <Link href="#" className="hover:text-luxury-accent transition-colors">
@@ -177,7 +177,7 @@ export default function Footer() {
           </Link>
           <Link href="#" className="hover:text-luxury-accent transition-colors">
             BEHANCE
-          </Link>
+          </Link> */}
         </div>
         <p className="text-white/30 text-xs tracking-widest uppercase font-bold">
           © {new Date().getFullYear()} Chroxel Agency.
