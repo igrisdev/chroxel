@@ -1,4 +1,25 @@
-export const PROJECTS_DATA_ALL = [
+interface IProject {
+  id: string;
+  slug: string;
+  category: string;
+  title: string;
+  img: string;
+  zIndex?: string;
+  client: string;
+  url_web: string;
+  year: string;
+  stat: string;
+  tech: string[];
+  longDescription: string;
+  features: string[];
+  testimonial: {
+    quote: string;
+    author: string;
+    role: string;
+  };
+}
+
+export const PROJECTS_DATA_ALL: IProject[] = [
   {
     id: "proj-1",
     slug: "macshop",
@@ -7,7 +28,8 @@ export const PROJECTS_DATA_ALL = [
     img: "https://res.cloudinary.com/dbwupri3k/image/upload/v1776395495/chroxel/66690216-99ae-408f-89e0-5eb8336e1071.png",
     zIndex: "z-[25]",
     client: "Empresa MacShop",
-    year: "2025",
+    url_web: "https://www.tiendamacshop.com/",
+    year: "2026",
     stat: "+15% Ventas Mensuales",
     tech: ["Next.js", "Tailwind CSS", "Shopify API", "Framer Motion"],
     longDescription:
@@ -32,6 +54,7 @@ export const PROJECTS_DATA_ALL = [
     img: "https://res.cloudinary.com/dbwupri3k/image/upload/v1776395543/chroxel/51e609ee-63f7-4afd-b2c5-5a4193ff6e68.png",
     zIndex: "z-[20]",
     client: "EQUIMAS Corp",
+    url_web: "https://equimas.com.co/",
     year: "2023",
     stat: "-30% Tasa de Abandono",
     tech: ["React", "Node.js", "MongoDB", "Express"],
@@ -57,6 +80,7 @@ export const PROJECTS_DATA_ALL = [
     img: "https://res.cloudinary.com/dbwupri3k/image/upload/v1776395549/chroxel/29686ae5-7f97-447f-b05f-6fc11166c54d.png",
     zIndex: "z-[20]",
     client: "Jake Electronics",
+    url_web: "https://www.jaketiendaelectronica.com/",
     year: "2024",
     stat: "+85% Retención de Usuarios",
     tech: ["Next.js", "TypeScript", "Prisma", "PostgreSQL"],
@@ -82,6 +106,7 @@ export const PROJECTS_DATA_ALL = [
     img: "https://res.cloudinary.com/dbwupri3k/image/upload/v1776395684/chroxel/a9f45e67-0f16-4936-b85c-bb9187b76f06.png",
     zIndex: "z-[10]",
     client: "Distribuidor Autorizado JBL",
+    url_web: "https://jbl-popayan.netlify.app/",
     year: "2023",
     stat: "+200% Alcance Local",
     tech: ["Webflow", "GSAP", "Shopify Buy Button"],

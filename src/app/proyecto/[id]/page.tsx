@@ -9,7 +9,9 @@ import Link from "next/link";
 
 export default function ProjectPage() {
   const { id } = useParams();
-  const container = useRef(null);
+  const container = useRef<HTMLDivElement>(null);
+  const imageLinkRef = useRef<HTMLAnchorElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
 
   const project = PROJECTS_DATA_ALL.find((p) => p.slug === id);
 
@@ -22,6 +24,49 @@ export default function ProjectPage() {
         stagger: 0.15,
         ease: "power3.out",
       });
+
+      const mm = gsap.matchMedia();
+      const imageLink = imageLinkRef.current;
+      const cursor = cursorRef.current;
+
+      if (imageLink && cursor) {
+        mm.add("(min-width: 1024px)", () => {
+          // Centramos el círculo usando los transformadores propios de GSAP
+          gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+
+          const xTo = gsap.quickTo(cursor, "x", {
+            duration: 0.2,
+            ease: "power3",
+          });
+          const yTo = gsap.quickTo(cursor, "y", {
+            duration: 0.2,
+            ease: "power3",
+          });
+
+          const onMouseMove = (e: MouseEvent) => {
+            xTo(e.clientX);
+            yTo(e.clientY);
+          };
+
+          const onMouseEnter = () => {
+            gsap.to(cursor, { scale: 1, opacity: 1, duration: 0.3 });
+          };
+
+          const onMouseLeave = () => {
+            gsap.to(cursor, { scale: 0, opacity: 0, duration: 0.3 });
+          };
+
+          imageLink.addEventListener("mousemove", onMouseMove);
+          imageLink.addEventListener("mouseenter", onMouseEnter);
+          imageLink.addEventListener("mouseleave", onMouseLeave);
+
+          return () => {
+            imageLink.removeEventListener("mousemove", onMouseMove);
+            imageLink.removeEventListener("mouseenter", onMouseEnter);
+            imageLink.removeEventListener("mouseleave", onMouseLeave);
+          };
+        });
+      }
     },
     { scope: container },
   );
@@ -39,7 +84,7 @@ export default function ProjectPage() {
       className="bg-luxury-bg min-h-screen flex flex-col relative overflow-x-hidden pt-20"
     >
       {/* Header del Proyecto */}
-      <section className="max-w-7xl w-full mx-auto px-6 mb-12 md:mb-20 relative z-10">
+      <section className="max-w-7xl w-full mx-auto px-4 mb-12 md:mb-20 relative z-10">
         <Link
           href={"/"}
           className="group text-luxury-accent font-display font-bold tracking-widest text-xs mb-8 flex items-center gap-2 hover:text-luxury-ink transition-colors w-fit"
@@ -52,30 +97,35 @@ export default function ProjectPage() {
         <p className="reveal text-luxury-accent font-display font-bold tracking-[0.3em] uppercase text-xs md:text-sm mb-4">
           {project.category}
         </p>
-        {/* Escalabilidad en texto para que no se rompa en móvil */}
         <h1 className="reveal font-display text-4xl md:text-6xl lg:text-8xl font-bold text-luxury-ink tracking-tighter mb-8 md:mb-12 leading-tight">
           {project.title}
         </h1>
 
-        <div className="reveal aspect-video md:aspect-video w-full rounded-2xl md:rounded-3xl overflow-hidden border border-luxury-border shadow-2xl relative">
-          <img
-            src={project.img}
-            alt={project.title}
-            className="w-full h-full object-center"
-          />
+        <div className="reveal aspect-video w-full rounded-2xl md:rounded-3xl border border-luxury-border shadow-sm relative">
+          <Link
+            ref={imageLinkRef}
+            href={project.url_web}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block w-full h-full relative overflow-hidden rounded-2xl md:rounded-3xl lg:cursor-none"
+          >
+            <div className="absolute inset-0 bg-black/40 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 z-10" />
+            <img
+              src={project.img}
+              alt={project.title}
+              className="w-full h-full object-center transition-transform duration-500 lg:group-hover:scale-105"
+            />
+          </Link>
         </div>
       </section>
 
       {/* Contenido Técnico */}
-      {/* Grid de 12 columnas para mejor control de proporciones (8 y 4) */}
-      <section className="max-w-7xl w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 pb-24 md:pb-32 relative z-10">
-        {/* Columna Izquierda (Contenido Principal) */}
+      <section className="max-w-7xl w-full mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 pb-24 md:pb-32 relative z-10">
         <div className="lg:col-span-8 flex flex-col gap-12 md:gap-16">
           <div className="reveal">
             <h2 className="text-2xl md:text-3xl font-display font-bold text-luxury-ink mb-6">
               El Desafío
             </h2>
-            {/* text-balance evita viudas (palabras sueltas al final) en el párrafo */}
             <p className="text-luxury-slate text-lg md:text-xl leading-relaxed font-light text-balance">
               {project.longDescription}
             </p>
@@ -87,7 +137,6 @@ export default function ProjectPage() {
                 key={i}
                 className="p-5 md:p-6 border border-luxury-border rounded-xl md:rounded-2xl bg-white shadow-sm flex items-start gap-4 transition-all hover:shadow-md"
               >
-                {/* shrink-0 evita que el punto decorativo se aplaste si el texto es muy largo */}
                 <div className="w-2 h-2 rounded-full bg-luxury-accent mt-2 shrink-0"></div>
                 <span className="font-medium text-luxury-ink text-sm md:text-base leading-snug">
                   {feat}
@@ -96,9 +145,7 @@ export default function ProjectPage() {
             ))}
           </div>
 
-          {/* Testimonio */}
           <div className="reveal bg-luxury-ink p-8 md:p-14 rounded-2xl md:rounded-[3rem] text-white relative overflow-hidden shadow-xl mt-4">
-            {/* pointer-events-none para que el blur no bloquee clics accidentales */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-luxury-accent/20 rounded-full blur-[80px] pointer-events-none"></div>
             <p className="text-xl md:text-3xl font-light italic mb-8 relative z-10 leading-relaxed text-balance">
               {`"${project.testimonial.quote}"`}
@@ -114,11 +161,8 @@ export default function ProjectPage() {
           </div>
         </div>
 
-        {/* Sidebar Ficha Técnica */}
-        {/* self-start es CRUCIAL aquí para que no se estire a lo largo del grid y el sticky funcione */}
         <aside className="lg:col-span-4 self-start w-full">
-          {/* lg:sticky asegura que solo flote en escritorio. En móvil se apila normalmente abajo. */}
-          <div className="reveal lg:sticky top-32 bg-white border border-luxury-border p-6 md:p-8 rounded-2xl md:rounded-3xl shadow-sm">
+          <div className="reveal lg:sticky top-32 bg-white border border-luxury-border p-4 md:p-8 rounded-2xl md:rounded-3xl shadow-sm">
             <h3 className="font-display font-bold text-luxury-ink border-b border-luxury-border pb-4 mb-6 text-sm md:text-base tracking-widest">
               FICHA TÉCNICA
             </h3>
@@ -166,6 +210,16 @@ export default function ProjectPage() {
           </div>
         </aside>
       </section>
+
+      {/* CURSOR PERSONALIZADO - Fuera de todo elemento con animación para mantener el fixed global */}
+      <div
+        ref={cursorRef}
+        className="hidden lg:flex fixed top-0 left-0 w-32 h-32 bg-luxury-accent rounded-full z-[100] pointer-events-none items-center justify-center text-center scale-0 opacity-0"
+      >
+        <span className="font-display font-bold text-xs tracking-wider text-luxury-ink">
+          VISITAR WEB
+        </span>
+      </div>
     </div>
   );
 }
