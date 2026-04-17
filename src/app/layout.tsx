@@ -27,7 +27,7 @@ export default function RootLayout({
         className={`${inter.variable} ${spaceGrotesk.variable} selection:bg-luxury-accent selection:text-white`}
       >
         <Navbar />
-        <main>{children}</main>
+        <main className="overflow-x-hidden">{children}</main>
         <Footer />
       </body>
     </html>

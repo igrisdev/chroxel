@@ -40,23 +40,19 @@ export default function Process() {
 
   useGSAP(
     () => {
-      let mm = gsap.matchMedia();
+      if (!trackRef.current || !wrapperRef.current) return;
 
-      mm.add("(min-width: 1024px)", () => {
-        if (!trackRef.current || !wrapperRef.current) return;
+      let scrollWidth = trackRef.current.scrollWidth - window.innerWidth;
 
-        let scrollWidth = trackRef.current.scrollWidth - window.innerWidth;
-
-        gsap.to(trackRef.current, {
-          x: -scrollWidth,
-          ease: "none",
-          scrollTrigger: {
-            trigger: wrapperRef.current,
-            pin: true,
-            scrub: 0.8,
-            end: () => "+=" + scrollWidth,
-          },
-        });
+      gsap.to(trackRef.current, {
+        x: -scrollWidth,
+        ease: "none",
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          pin: true,
+          scrub: 0.8,
+          end: () => "+=" + scrollWidth,
+        },
       });
     },
     { scope: wrapperRef },
@@ -71,21 +67,23 @@ export default function Process() {
       <div
         id="process-track"
         ref={trackRef}
-        className="flex flex-col md:flex-row md:w-[400vw] h-auto md:h-screen"
+        className="flex flex-row w-[400vw] h-[100dvh]"
       >
         {PROCESS_STEPS.map((step, idx) => (
           <div
             key={idx}
-            className="panel w-full md:w-screen h-[60vh] md:h-full flex flex-col justify-center px-8 md:px-32 relative md:border-r border-luxury-border overflow-hidden"
+            className="panel w-screen h-full flex flex-col justify-center px-8 md:px-32 relative border-r border-luxury-border/50 md:border-luxury-border overflow-hidden"
           >
-            <div className="absolute top-4 md:top-12 left-4 md:left-24 text-[12rem] md:text-[22rem] font-display font-bold text-luxury-accent opacity-[0.15] select-none z-0 leading-none pointer-events-none italic">
-              {step.num}
-            </div>
-            <div className="relative z-10 max-w-2xl">
+            <div className="relative z-10 max-w-2xl flex flex-col">
+              {/* Número integrado al flujo normal en block */}
+              <div className="block text-[6rem] md:text-[10rem] font-display font-bold text-luxury-accent opacity-[0.25] select-none leading-none italic mb-4">
+                {step.num}
+              </div>
+
               <p className="text-luxury-accent font-display font-bold tracking-widest mb-4 uppercase text-sm">
                 {step.phase}
               </p>
-              <h3 className="text-4xl md:text-6xl font-bold text-luxury-ink mb-8 tracking-tighter">
+              <h3 className="text-4xl md:text-6xl font-bold text-luxury-ink mb-6 md:mb-8 tracking-tighter">
                 {step.title}
               </h3>
               <p className="text-luxury-slate text-xl md:text-2xl leading-relaxed font-light italic">
