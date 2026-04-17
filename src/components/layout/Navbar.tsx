@@ -50,10 +50,10 @@ export default function Navbar() {
         ${isScrolled && !isOpen ? "bg-black/10 backdrop-blur-md" : "bg-transparent"}
         `}
       >
-        {/* LOGO (Enlace a Inicio, si es Home solo quita el menú móvil) */}
+        {/* LOGO (Enlace a Inicio, simplemente cierra el menú móvil si está abierto) */}
         <Link
           href="/"
-          onClick={() => (setIsHome ? setIsOpen(false) : null)}
+          onClick={() => setIsOpen(false)}
           className="font-display font-bold text-2xl tracking-widest text-white cursor-pointer hover:text-luxury-accent transition-colors relative z-[110]"
         >
           CHROXEL
@@ -78,22 +78,22 @@ export default function Navbar() {
             {/* BOTÓN HAMBURGUESA (MÓVIL) CON ANIMACIÓN DE X PERFECTA */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden relative z-[110] p-2 focus:outline-none flex flex-col justify-between w-8 h-6"
+              className="md:hidden relative z-[110] w-8 h-6 flex items-center justify-center focus:outline-none"
               aria-label="Abrir menú"
             >
               <span
-                className={`h-[2px] w-full bg-white transition-all duration-300 ease-in-out origin-center ${
-                  isOpen ? "rotate-45 translate-y-[11px]" : ""
+                className={`absolute h-[2px] w-full bg-white transition-all duration-300 ease-in-out ${
+                  isOpen ? "rotate-45" : "-translate-y-[10px]"
                 }`}
               />
               <span
-                className={`h-[2px] w-full bg-white transition-all duration-300 ease-in-out ${
-                  isOpen ? "opacity-0" : ""
+                className={`absolute h-[2px] w-full bg-white transition-all duration-300 ease-in-out ${
+                  isOpen ? "opacity-0" : "opacity-100"
                 }`}
               />
               <span
-                className={`h-[2px] w-full bg-white transition-all duration-300 ease-in-out origin-center ${
-                  isOpen ? "-rotate-45 -translate-y-[11px]" : ""
+                className={`absolute h-[2px] w-full bg-white transition-all duration-300 ease-in-out ${
+                  isOpen ? "-rotate-45" : "translate-y-[10px]"
                 }`}
               />
             </button>
