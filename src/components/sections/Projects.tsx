@@ -5,48 +5,25 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
+import { PROJECTS_DATA_ALL } from "@/lib/data";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PROJECTS_DATA = [
-  {
-    id: "proj-1",
-    category: "ESTRATEGIA FINTECH",
-    title: "Nexus Banking",
-    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
-    zIndex: "z-[25]",
-    slug: "nexus-banking",
-  },
-  {
-    id: "proj-2",
-    category: "PLATAFORMA SAAS",
-    title: "Omni Analytics",
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
-    zIndex: "z-[20]",
-    slug: "omni-analytics",
-  },
-  {
-    id: "proj-3",
-    category: "E-COMMERCE LUXE",
-    title: "Aura Fashion",
-    img: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=800&q=80",
-    zIndex: "z-[20]",
-  },
-  {
-    id: "proj-4",
-    category: "IDENTIDAD CORPORATIVA",
-    title: "Vanguard Group",
-    img: "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&w=800&q=80",
-    zIndex: "z-[10]",
-  },
-];
+export const PROJECTS_DATA = PROJECTS_DATA_ALL.slice(0, 4).map((project) => ({
+  id: project.id,
+  category: project.category,
+  title: project.title,
+  img: project.img,
+  zIndex: project.zIndex,
+  slug: project.slug,
+}));
 
 export default function Projects() {
   const container = useRef<HTMLElement>(null);
 
   useGSAP(
     () => {
-      let mm = gsap.matchMedia();
+      const mm = gsap.matchMedia();
 
       mm.add("(min-width: 1024px)", () => {
         // --- 1. Animación y Ajuste del Texto Principal ---
@@ -186,7 +163,7 @@ export default function Projects() {
             <img
               src={proj.img}
               alt={proj.category}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+              className="w-full h-full group-hover:scale-105 transition-transform duration-1000"
               loading="lazy"
             />
             <div className="absolute bottom-0 left-0 p-10 z-20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">

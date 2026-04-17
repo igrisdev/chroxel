@@ -11,7 +11,7 @@ export default function ProjectPage() {
   const { id } = useParams();
   const container = useRef(null);
 
-  const project = PROJECTS_DATA_ALL.find((p) => p.id === id);
+  const project = PROJECTS_DATA_ALL.find((p) => p.slug === id);
 
   useGSAP(
     () => {
@@ -57,11 +57,11 @@ export default function ProjectPage() {
           {project.title}
         </h1>
 
-        <div className="reveal aspect-video md:aspect-[21/9] w-full rounded-2xl md:rounded-3xl overflow-hidden border border-luxury-border shadow-2xl relative">
+        <div className="reveal aspect-video md:aspect-video w-full rounded-2xl md:rounded-3xl overflow-hidden border border-luxury-border shadow-2xl relative">
           <img
             src={project.img}
             alt={project.title}
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-center"
           />
         </div>
       </section>
