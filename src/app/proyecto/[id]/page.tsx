@@ -124,7 +124,7 @@ export default function ProjectPage() {
         <div className="lg:col-span-8 flex flex-col gap-12 md:gap-16">
           <div className="reveal">
             <h2 className="text-2xl md:text-3xl font-display font-bold text-luxury-ink mb-6">
-              El Desafío
+              Descripción
             </h2>
             <p className="text-luxury-slate text-lg md:text-xl leading-relaxed font-light text-balance">
               {project.longDescription}
