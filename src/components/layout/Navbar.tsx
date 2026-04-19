@@ -54,9 +54,12 @@ export default function Navbar() {
         <Link
           href="/"
           onClick={() => setIsOpen(false)}
-          className="font-display font-bold text-2xl tracking-widest text-white cursor-pointer hover:text-luxury-accent transition-colors relative z-[110]"
+          className="font-display items-center flex gap-2 font-bold text-2xl tracking-widest text-white cursor-pointer hover:text-luxury-accent transition-colors relative z-[110]"
         >
-          CHROXEL
+          <div className="size-6">
+            <img src="/chroxel_logo_v2.png" alt="logo chroxel" />
+          </div>
+          <span>CHROXEL</span>
         </Link>
 
         {/* SOLO SE MUESTRAN LOS ENLACES Y EL BOTÓN MÓVIL SI ESTAMOS EN INICIO "/" */}

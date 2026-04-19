@@ -166,7 +166,9 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-6 pt-12 flex flex-col md:flex-row justify-between items-center relative z-10">
         <div className="font-display font-bold text-2xl tracking-widest text-white mb-6 md:mb-0">
-          CHROXEL
+          <div className="size-10">
+            <img src="/chroxel_logo_v2.png" alt="logo chroxel" />
+          </div>
         </div>
         <div className="flex space-x-8 text-sm font-display tracking-widest text-white/50 mb-6 md:mb-0">
           {/* <Link href="#" className="hover:text-luxury-accent transition-colors">
@@ -180,7 +182,7 @@ export default function Footer() {
           </Link> */}
         </div>
         <p className="text-white/30 text-xs tracking-widest uppercase font-bold">
-          © {new Date().getFullYear()} Chroxel Agency.
+          © {new Date().getFullYear()} Chroxel
         </p>
       </div>
     </footer>

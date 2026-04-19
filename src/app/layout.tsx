@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   title: "Chroxel - Agencia de Desarrollo Premium",
   description:
     "Diseño boutique, ingeniería robusta y atención absoluta al detalle.",
+  icons: {
+    icon: "/chroxel_logo_v2.png",
+  },
 };
 
 export default function RootLayout({
