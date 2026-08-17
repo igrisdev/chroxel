@@ -129,7 +129,7 @@ export default function ProjectPage() {
             rel="noopener noreferrer"
             className="group block w-full h-full relative overflow-hidden rounded-2xl md:rounded-3xl lg:cursor-none"
           >
-            <div className="absolute inset-0 bg-black/40 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 z-10" />
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
             <img
               src={project.img}
               alt={project.title}
