@@ -42,7 +42,7 @@ export default function Process() {
     () => {
       if (!trackRef.current || !wrapperRef.current) return;
 
-      let scrollWidth = trackRef.current.scrollWidth - window.innerWidth;
+      const scrollWidth = trackRef.current.scrollWidth - window.innerWidth;
 
       gsap.to(trackRef.current, {
         x: -scrollWidth,

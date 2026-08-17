@@ -1,113 +1,102 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
-import { PROJECTS_DATA_ALL } from "@/lib/data";
+import { IProject } from "@/lib/data";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export const PROJECTS_DATA = PROJECTS_DATA_ALL.slice(0, 4).map((project) => ({
-  id: project.id,
-  category: project.category,
-  title: project.title,
-  img: project.img,
-  zIndex: project.zIndex,
-  slug: project.slug,
-}));
-
 export default function Projects() {
   const container = useRef<HTMLElement>(null);
+  const [projects, setProjects] = useState<IProject[]>([]);
+
+  useEffect(() => {
+    fetch("/api/projects")
+      .then((res) => res.json())
+      .then((data: IProject[]) => setProjects(data.slice(0, 4)))
+      .catch(() => setProjects([]));
+  }, []);
 
   useGSAP(
     () => {
+      if (projects.length === 0) return;
+
       const mm = gsap.matchMedia();
 
       mm.add("(min-width: 1024px)", () => {
-        // --- 1. Animación y Ajuste del Texto Principal ---
-        // Subimos el texto drásticamente (y: -150) para que no toque la curva de imágenes.
-        // Mantenemos la animación de entrada suave.
         gsap.from("#projects-title-text", {
           scrollTrigger: {
             trigger: container.current,
-            start: "top 90%", // Empieza un poco antes para que se vea la subida
+            start: "top 90%",
             toggleActions: "play none none reverse",
           },
           opacity: 0,
-          y: -150, // Lo movemos hacia arriba drásticamente
+          y: -150,
           duration: 1.5,
           ease: "expo.out",
         });
 
-        // --- 2. Timeline de las 4 tarjetas formando la CURVA VERDE ---
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: container.current,
-            start: "top bottom", // Inicia cuando la sección asoma (final del Hero)
-            end: "top 5%", // Termina cuando la sección está casi arriba para un scroll suave
+            start: "top bottom",
+            end: "top 5%",
             scrub: 1.5,
           },
         });
 
-        // Calculamos las posiciones basándonos en la curva cóncava suave.
-        // '0' al final de cada tween asegura que todas las animaciones corran en paralelo.
-
-        // #proj-1: Extremo IZQUIERDO, arriba en la curva, rotación negativa pronunciada.
         tl.from(
           "#proj-1",
           {
-            y: () => -window.innerHeight * 0.9, // Bastante arriba
-            x: () => -window.innerWidth * 0.3, // Muy a la izquierda
+            y: () => -window.innerHeight * 0.9,
+            x: () => -window.innerWidth * 0.3,
             scale: 1.1,
-            rotation: -25, // Rotación hacia afuera pronunciada
+            rotation: -25,
             ease: "power2.inOut",
           },
-          0,
+          0
         );
 
-        // #proj-3: Izquierda CENTRO, punto más bajo de la curva izquierda, rotación suave.
         tl.from(
           "#proj-3",
           {
-            y: () => -window.innerHeight * 1.1, // Más abajo que el extremo
-            x: () => -window.innerWidth * 0.1, // Hacia el centro
+            y: () => -window.innerHeight * 1.1,
+            x: () => -window.innerWidth * 0.1,
             scale: 1.2,
-            rotation: -8, // Rotación suave hacia afuera
+            rotation: -8,
             ease: "power2.inOut",
           },
-          0,
+          0
         );
 
-        // #proj-4: Derecha CENTRO, punto más bajo de la curva derecha, rotación suave simétrica.
         tl.from(
           "#proj-4",
           {
-            y: () => -window.innerHeight * 1.1, // Simétrico a proj-3
-            x: () => window.innerWidth * 0.1, // Hacia el centro
+            y: () => -window.innerHeight * 1.1,
+            x: () => window.innerWidth * 0.1,
             scale: 1.15,
-            rotation: 8, // Rotación suave hacia afuera (simétrica)
+            rotation: 8,
             ease: "power2.inOut",
           },
-          0,
+          0
         );
 
-        // #proj-2: Extremo DERECHO, arriba en la curva (simétrico a proj-1), rotación positiva pronunciada.
         tl.from(
           "#proj-2",
           {
-            y: () => -window.innerHeight * 0.9, // Bastante arriba (ligeramente diferente para asimetría orgánica)
-            x: () => window.innerWidth * 0.3, // Muy a la derecha
+            y: () => -window.innerHeight * 0.9,
+            x: () => window.innerWidth * 0.3,
             scale: 1.1,
-            rotation: 25, // Rotación hacia afuera pronunciada (simétrica)
+            rotation: 25,
             ease: "power2.inOut",
           },
-          0,
+          0
         );
       });
 
-      // --- Animaciones para Móvil (Mantenemos la cuadrícula) ---
       mm.add("(max-width: 1023px)", () => {
         gsap.from("#projects-title-text", {
           scrollTrigger: { trigger: container.current, start: "top 85%" },
@@ -116,7 +105,7 @@ export default function Projects() {
           duration: 1.2,
           ease: "power3.out",
         });
-        gsap.utils.toArray(".project-item").forEach((item: any) => {
+        gsap.utils.toArray<HTMLElement>(".project-item").forEach((item) => {
           gsap.from(item, {
             scrollTrigger: { trigger: item, start: "top 85%" },
             y: 40,
@@ -127,8 +116,10 @@ export default function Projects() {
         });
       });
     },
-    { scope: container },
+    { scope: container, dependencies: [projects] }
   );
+
+  const zIndices = ["z-[25]", "z-[20]", "z-[20]", "z-[10]"];
 
   return (
     <section
@@ -136,7 +127,6 @@ export default function Projects() {
       ref={container}
       className="py-32 bg-luxury-bg relative"
     >
-      {/* Contenedor del título con ID específico para subirlo */}
       <div
         id="projects-title-text"
         className="max-w-7xl mx-auto px-6 mb-32 text-center relative z-40"
@@ -152,12 +142,12 @@ export default function Projects() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 relative z-20">
-        {PROJECTS_DATA.map((proj) => (
+        {projects.map((proj, index) => (
           <Link
             key={proj.id}
-            id={proj.id}
+            id={`proj-${index + 1}`}
             href={`/proyecto/${proj.slug}`}
-            className={`project-item group relative aspect-video bg-luxury-card rounded-3xl overflow-hidden ${proj.zIndex} border border-luxury-border shadow-md hover:shadow-2xl transition-shadow duration-500`}
+            className={`project-item group relative aspect-video bg-luxury-card rounded-3xl overflow-hidden ${zIndices[index] || "z-[10]"} border border-luxury-border shadow-md hover:shadow-2xl transition-shadow duration-500`}
           >
             <div className="absolute inset-0 bg-gradient-to-t from-luxury-ink/90 via-luxury-ink/20 to-transparent z-10 opacity-80 group-hover:opacity-100 transition-opacity duration-500"></div>
             <img

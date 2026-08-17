@@ -1,10 +1,10 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { PROJECTS_DATA_ALL } from "@/lib/data";
+import { IProjectDetail } from "@/lib/data";
 import Link from "next/link";
 
 export default function ProjectPage() {
@@ -12,11 +12,24 @@ export default function ProjectPage() {
   const container = useRef<HTMLDivElement>(null);
   const imageLinkRef = useRef<HTMLAnchorElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
+  const [project, setProject] = useState<IProjectDetail | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const project = PROJECTS_DATA_ALL.find((p) => p.slug === id);
+  useEffect(() => {
+    fetch(`/api/projects/${id}`)
+      .then((res) => {
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .then((data) => setProject(data))
+      .catch(() => setProject(null))
+      .finally(() => setLoading(false));
+  }, [id]);
 
   useGSAP(
     () => {
+      if (!project) return;
+
       gsap.from(".reveal", {
         y: 30,
         opacity: 0,
@@ -31,7 +44,6 @@ export default function ProjectPage() {
 
       if (imageLink && cursor) {
         mm.add("(min-width: 1024px)", () => {
-          // Centramos el círculo usando los transformadores propios de GSAP
           gsap.set(cursor, { xPercent: -50, yPercent: -50 });
 
           const xTo = gsap.quickTo(cursor, "x", {
@@ -68,8 +80,16 @@ export default function ProjectPage() {
         });
       }
     },
-    { scope: container },
+    { scope: container, dependencies: [project] }
   );
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-luxury-bg">
+        <div className="w-8 h-8 border-2 border-luxury-accent border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (!project)
     return (
@@ -122,6 +142,7 @@ export default function ProjectPage() {
       {/* Contenido Técnico */}
       <section className="max-w-7xl w-full mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 pb-24 md:pb-32 relative z-10">
         <div className="lg:col-span-8 flex flex-col gap-12 md:gap-16">
+          {/* Descripción */}
           <div className="reveal">
             <h2 className="text-2xl md:text-3xl font-display font-bold text-luxury-ink mb-6">
               Descripción
@@ -131,58 +152,172 @@ export default function ProjectPage() {
             </p>
           </div>
 
-          <div className="reveal grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-            {project.features.map((feat, i) => (
-              <div
-                key={i}
-                className="p-5 md:p-6 border border-luxury-border rounded-xl md:rounded-2xl bg-white shadow-sm flex items-start gap-4 transition-all hover:shadow-md"
-              >
-                <div className="w-2 h-2 rounded-full bg-luxury-accent mt-2 shrink-0"></div>
-                <span className="font-medium text-luxury-ink text-sm md:text-base leading-snug">
-                  {feat}
-                </span>
+          {/* Características */}
+          {project.features.length > 0 && (
+            <div className="reveal">
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-luxury-ink mb-6">
+                Características
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                {project.features.map((feat, i) => (
+                  <div
+                    key={i}
+                    className="p-5 md:p-6 border border-luxury-border rounded-xl md:rounded-2xl bg-white shadow-sm flex items-start gap-4 transition-all hover:shadow-md"
+                  >
+                    <div className="w-2 h-2 rounded-full bg-luxury-accent mt-2 shrink-0"></div>
+                    <span className="font-medium text-luxury-ink text-sm md:text-base leading-snug">
+                      {feat}
+                    </span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-
-          <div className="reveal bg-luxury-ink p-8 md:p-14 rounded-2xl md:rounded-[3rem] text-white relative overflow-hidden shadow-xl mt-4">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-luxury-accent/20 rounded-full blur-[80px] pointer-events-none"></div>
-            <p className="text-xl md:text-3xl font-light italic mb-8 relative z-10 leading-relaxed text-balance">
-              {`"${project.testimonial.quote}"`}
-            </p>
-            <div className="relative z-10">
-              <p className="font-bold text-luxury-accent uppercase tracking-widest text-sm mb-1">
-                {project.testimonial.author}
-              </p>
-              <p className="text-white/60 text-xs md:text-sm font-medium">
-                {project.testimonial.role}
-              </p>
             </div>
-          </div>
+          )}
+
+          {/* Testimonio */}
+          {project.testimonial.quote && (
+            <div className="reveal bg-luxury-ink p-8 md:p-14 rounded-2xl md:rounded-[3rem] text-white relative overflow-hidden shadow-xl mt-4">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-luxury-accent/20 rounded-full blur-[80px] pointer-events-none"></div>
+              <p className="text-xl md:text-3xl font-light italic mb-8 relative z-10 leading-relaxed text-balance">
+                {`"${project.testimonial.quote}"`}
+              </p>
+              <div className="relative z-10">
+                <p className="font-bold text-luxury-accent uppercase tracking-widest text-sm mb-1">
+                  {project.testimonial.author}
+                </p>
+                <p className="text-white/60 text-xs md:text-sm font-medium">
+                  {project.testimonial.role}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Detalles del Proyecto */}
+          {(project.status || project.end_date) && (
+            <div className="reveal">
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-luxury-ink mb-6">
+                Detalles del Proyecto
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                {project.status && (
+                  <div className="p-5 md:p-6 border border-luxury-border rounded-xl md:rounded-2xl bg-white shadow-sm">
+                    <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
+                      Estado
+                    </p>
+                    <p className="text-luxury-ink font-bold text-sm md:text-base">
+                      {project.status}
+                    </p>
+                  </div>
+                )}
+                {project.year && (
+                  <div className="p-5 md:p-6 border border-luxury-border rounded-xl md:rounded-2xl bg-white shadow-sm">
+                    <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
+                      Fecha Inicio
+                    </p>
+                    <p className="text-luxury-ink font-bold text-sm md:text-base">
+                      {project.year}
+                    </p>
+                  </div>
+                )}
+                {project.end_date && (
+                  <div className="p-5 md:p-6 border border-luxury-border rounded-xl md:rounded-2xl bg-white shadow-sm">
+                    <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
+                      Fecha Fin
+                    </p>
+                    <p className="text-luxury-ink font-bold text-sm md:text-base">
+                      {project.end_date.split("-")[0]}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
+        {/* Sidebar */}
         <aside className="lg:col-span-4 self-start w-full">
           <div className="reveal lg:sticky top-32 bg-white border border-luxury-border p-4 md:p-8 rounded-2xl md:rounded-3xl shadow-sm">
             <h3 className="font-display font-bold text-luxury-ink border-b border-luxury-border pb-4 mb-6 text-sm md:text-base tracking-widest">
               FICHA TÉCNICA
             </h3>
             <div className="flex flex-col gap-6">
-              <div>
-                <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-1.5">
-                  Cliente
-                </p>
-                <p className="text-luxury-ink font-bold text-sm md:text-base">
-                  {project.client}
-                </p>
-              </div>
-              <div>
-                <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-1.5">
-                  Año
-                </p>
-                <p className="text-luxury-ink font-bold text-sm md:text-base">
-                  {project.year}
-                </p>
-              </div>
+              {/* Logo Empresa */}
+              {project.logo_url && (
+                <div className="flex justify-center pb-4 border-b border-luxury-border/50">
+                  <img
+                    src={project.logo_url}
+                    alt={`${project.title} logo`}
+                    className="max-h-16 max-w-[160px] object-contain"
+                  />
+                </div>
+              )}
+
+              {project.client && (
+                <div>
+                  <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-1.5">
+                    Cliente
+                  </p>
+                  <p className="text-luxury-ink font-bold text-sm md:text-base">
+                    {project.client}
+                  </p>
+                </div>
+              )}
+
+              {project.year && (
+                <div>
+                  <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-1.5">
+                    Año
+                  </p>
+                  <p className="text-luxury-ink font-bold text-sm md:text-base">
+                    {project.year}
+                    {project.end_date && ` — ${project.end_date.split("-")[0]}`}
+                  </p>
+                </div>
+              )}
+
+              {/* Framework */}
+              {project.framework_icon && (
+                <div>
+                  <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
+                    Framework
+                  </p>
+                  {project.framework_url ? (
+                    <a
+                      href={project.framework_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-3 py-1.5 bg-luxury-bg border border-luxury-border rounded-full text-[10px] md:text-xs font-bold text-luxury-ink hover:border-luxury-accent transition-colors"
+                    >
+                      {project.framework_icon}
+                      <span className="text-luxury-accent">↗</span>
+                    </a>
+                  ) : (
+                    <span className="px-3 py-1.5 bg-luxury-bg border border-luxury-border rounded-full text-[10px] md:text-xs font-bold text-luxury-ink">
+                      {project.framework_icon}
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* GitHub */}
+              {project.github_url && (
+                <div>
+                  <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
+                    Repositorio
+                  </p>
+                  <a
+                    href={project.github_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-luxury-bg border border-luxury-border rounded-full text-[10px] md:text-xs font-bold text-luxury-ink hover:border-luxury-accent transition-colors"
+                  >
+                    GitHub
+                    <span className="text-luxury-accent">↗</span>
+                  </a>
+                </div>
+              )}
+
+              {/* Tecnologías */}
               <div>
                 <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
                   Tecnologías
@@ -198,20 +333,24 @@ export default function ProjectPage() {
                   ))}
                 </div>
               </div>
-              <div className="pt-4 mt-2 border-t border-luxury-border/50">
-                <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
-                  Impacto
-                </p>
-                <p className="text-3xl md:text-4xl font-bold text-luxury-accent tracking-tighter">
-                  {project.stat}
-                </p>
-              </div>
+
+              {/* Impacto */}
+              {project.stat && (
+                <div className="pt-4 mt-2 border-t border-luxury-border/50">
+                  <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
+                    Impacto
+                  </p>
+                  <p className="text-3xl md:text-4xl font-bold text-luxury-accent tracking-tighter">
+                    {project.stat}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </aside>
       </section>
 
-      {/* CURSOR PERSONALIZADO - Fuera de todo elemento con animación para mantener el fixed global */}
+      {/* CURSOR PERSONALIZADO */}
       <div
         ref={cursorRef}
         className="hidden lg:flex fixed top-0 left-0 w-32 h-32 bg-luxury-accent rounded-full z-[100] pointer-events-none items-center justify-center text-center scale-0 opacity-0"
