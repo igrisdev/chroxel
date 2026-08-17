@@ -139,6 +139,10 @@ function extractYear(dateStr: string): string {
   return dateStr.split("-")[0];
 }
 
+function cleanTitle(title: string): string {
+  return title.replace(/_/g, " ");
+}
+
 function mapPageToProject(page: PageObjectResponse): IProject {
   const { properties } = page;
 
@@ -146,7 +150,7 @@ function mapPageToProject(page: PageObjectResponse): IProject {
     id: page.id,
     slug: generateSlug(getTitle(properties, "Titulo")),
     category: getSelect(properties, "Seleccionar"),
-    title: getTitle(properties, "Titulo"),
+    title: cleanTitle(getTitle(properties, "Titulo")),
     img: getFiles(properties, "Imagen Presentación"),
     client: getPlainText(properties, "Nombre Empresa"),
     url_web: getUrl(properties, "Pagina Web Empresa"),
