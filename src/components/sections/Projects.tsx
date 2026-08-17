@@ -167,6 +167,15 @@ export default function Projects() {
           </Link>
         ))}
       </div>
+
+      <div className="flex justify-center mt-16">
+        <Link
+          href="/proyectos"
+          className="px-8 py-4 border-2 border-luxury-accent text-luxury-accent font-display font-bold tracking-widest text-sm uppercase rounded-full hover:bg-luxury-accent hover:text-white transition-all duration-300"
+        >
+          Ver más
+        </Link>
+      </div>
     </section>
   );
 }
