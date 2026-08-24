@@ -4,8 +4,20 @@ import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { IProjectDetail } from "@/lib/data";
 import Link from "next/link";
+import { IProjectDetail } from "@/lib/data";
+import { revealOnScroll, refreshTriggersWhenReady } from "@/lib/animations";
+
+/** Deriva una etiqueta legible del framework a partir de su URL. */
+function frameworkLabel(project: IProjectDetail): string | null {
+  if (project.framework_icon) return project.framework_icon;
+  if (!project.framework_url) return null;
+  try {
+    return new URL(project.framework_url).hostname.replace(/^www\./, "");
+  } catch {
+    return null;
+  }
+}
 
 export default function ProjectPage() {
   const { id } = useParams();
@@ -17,10 +29,7 @@ export default function ProjectPage() {
 
   useEffect(() => {
     fetch(`/api/projects/${id}`)
-      .then((res) => {
-        if (!res.ok) return null;
-        return res.json();
-      })
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => setProject(data))
       .catch(() => setProject(null))
       .finally(() => setLoading(false));
@@ -30,13 +39,8 @@ export default function ProjectPage() {
     () => {
       if (!project) return;
 
-      gsap.from(".reveal", {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out",
-      });
+      revealOnScroll(".reveal", { y: 26, duration: 0.9, stagger: 0.1 });
+      refreshTriggersWhenReady(container.current);
 
       const mm = gsap.matchMedia();
       const imageLink = imageLinkRef.current;
@@ -45,28 +49,17 @@ export default function ProjectPage() {
       if (imageLink && cursor) {
         mm.add("(min-width: 1024px)", () => {
           gsap.set(cursor, { xPercent: -50, yPercent: -50 });
-
-          const xTo = gsap.quickTo(cursor, "x", {
-            duration: 0.2,
-            ease: "power3",
-          });
-          const yTo = gsap.quickTo(cursor, "y", {
-            duration: 0.2,
-            ease: "power3",
-          });
+          const xTo = gsap.quickTo(cursor, "x", { duration: 0.2, ease: "power3" });
+          const yTo = gsap.quickTo(cursor, "y", { duration: 0.2, ease: "power3" });
 
           const onMouseMove = (e: MouseEvent) => {
             xTo(e.clientX);
             yTo(e.clientY);
           };
-
-          const onMouseEnter = () => {
+          const onMouseEnter = () =>
             gsap.to(cursor, { scale: 1, opacity: 1, duration: 0.3 });
-          };
-
-          const onMouseLeave = () => {
+          const onMouseLeave = () =>
             gsap.to(cursor, { scale: 0, opacity: 0, duration: 0.3 });
-          };
 
           imageLink.addEventListener("mousemove", onMouseMove);
           imageLink.addEventListener("mouseenter", onMouseEnter);
@@ -80,7 +73,7 @@ export default function ProjectPage() {
         });
       }
     },
-    { scope: container, dependencies: [project] }
+    { scope: container, dependencies: [project] },
   );
 
   if (loading) {
@@ -91,263 +84,282 @@ export default function ProjectPage() {
     );
   }
 
-  if (!project)
+  if (!project) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-luxury-bg text-luxury-ink font-display text-2xl">
-        Proyecto no encontrado
+      <div className="min-h-screen flex flex-col items-center justify-center bg-luxury-bg gap-6 px-6">
+        <p className="font-display text-2xl text-luxury-ink">
+          Proyecto no encontrado
+        </p>
+        <Link
+          href="/proyectos"
+          className="inline-flex items-center h-[50px] px-6 rounded-[11px] border border-luxury-line font-display font-semibold text-[15px] hover:border-luxury-accent transition-all"
+        >
+          Ver todos los proyectos
+        </Link>
       </div>
     );
+  }
+
+  const framework = frameworkLabel(project);
+  const displayUrl = project.url_web
+    ? project.url_web.replace(/^https?:\/\//, "").replace(/\/$/, "")
+    : null;
+
+  // Sólo mostramos las celdas con dato real: así la ficha se ve compacta y
+  // deliberada aunque el proyecto tenga pocos campos llenos en Notion.
+  const meta = [
+    project.client && { label: "CLIENTE", value: project.client },
+    project.category && { label: "CATEGORÍA", value: project.category },
+    project.year && {
+      label: "AÑO",
+      value: project.end_date
+        ? `${project.year} — ${project.end_date.split("-")[0]}`
+        : project.year,
+    },
+    project.status && { label: "ESTADO", value: project.status },
+    framework && { label: "FRAMEWORK", value: framework },
+    project.tech.length > 0 && {
+      label: "TECNOLOGÍAS",
+      value: String(project.tech.length),
+    },
+  ].filter(Boolean) as { label: string; value: string }[];
 
   return (
-    <div
-      ref={container}
-      className="bg-luxury-bg min-h-screen flex flex-col relative overflow-x-hidden pt-20"
-    >
-      {/* Header del Proyecto */}
-      <section className="max-w-7xl w-full mx-auto px-4 mb-12 md:mb-20 relative z-10">
+    <div ref={container} className="bg-luxury-bg min-h-screen pt-[110px]">
+      {/* ENCABEZADO */}
+      <section className="max-w-[1180px] mx-auto px-6 md:px-12">
         <Link
-          href={"/"}
-          className="group text-luxury-accent font-display font-bold tracking-widest text-xs mb-8 flex items-center gap-2 hover:text-luxury-ink transition-colors w-fit"
+          href="/proyectos"
+          className="group font-mono text-xs tracking-[0.06em] text-luxury-accent-2 inline-flex items-center gap-1.5 hover:text-luxury-ink transition-colors"
         >
           <span className="transform group-hover:-translate-x-1 transition-transform">
             ←
           </span>
-          VOLVER
+          TODOS LOS PROYECTOS
         </Link>
-        <p className="reveal text-luxury-accent font-display font-bold tracking-[0.3em] uppercase text-xs md:text-sm mb-4">
-          {project.category}
-        </p>
-        <h1 className="reveal font-display text-4xl md:text-6xl lg:text-8xl font-bold text-luxury-ink tracking-tighter mb-8 md:mb-12 leading-tight">
-          {project.title}
-        </h1>
 
-        <div className="reveal aspect-video w-full rounded-2xl md:rounded-3xl border border-luxury-border shadow-sm relative">
-          <Link
-            ref={imageLinkRef}
-            href={project.url_web}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block w-full h-full relative overflow-hidden rounded-2xl md:rounded-3xl lg:cursor-none"
-          >
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
-            <img
-              src={project.img}
-              alt={project.title}
-              className="w-full h-full object-cover transition-transform duration-500 lg:group-hover:scale-105"
-            />
-          </Link>
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-16 items-end mt-8">
+          <div>
+            {project.category && (
+              <span className="reveal tech-tag">{project.category}</span>
+            )}
+            <h1 className="reveal font-display text-4xl md:text-6xl font-bold text-luxury-ink tracking-[-0.035em] leading-[1.04] mt-4">
+              {project.title}
+            </h1>
+            {project.longDescription && (
+              <p className="reveal text-luxury-slate text-lg md:text-xl font-light leading-relaxed max-w-xl mt-5">
+                {project.longDescription}
+              </p>
+            )}
+
+            <div className="reveal flex flex-wrap gap-3 mt-8">
+              {project.url_web && (
+                <a
+                  href={project.url_web}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 h-[50px] px-6 rounded-[11px] bg-luxury-accent text-[#151107] font-display font-semibold text-[15px] hover:bg-luxury-accent-2 hover:-translate-y-0.5 transition-all"
+                >
+                  Visitar sitio
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M7 17L17 7M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </a>
+              )}
+              {project.github_url && (
+                <a
+                  href={project.github_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 h-[50px] px-6 rounded-[11px] border border-luxury-line text-luxury-ink font-display font-semibold text-[15px] hover:border-luxury-accent transition-all"
+                >
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.4-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2.9-.3 2-.4 3-.4s2.1.1 3 .4c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z" />
+                  </svg>
+                  Repositorio
+                </a>
+              )}
+            </div>
+          </div>
+
+          {/* Logo del cliente */}
+          {project.logo_url && (
+            <div className="reveal bg-luxury-card border border-luxury-line rounded-[18px] p-8 flex items-center justify-center min-h-[150px]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={project.logo_url}
+                alt={`Logo de ${project.client || project.title}`}
+                className="max-h-20 max-w-[220px] object-contain"
+              />
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Contenido Técnico */}
-      <section className="max-w-7xl w-full mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 pb-24 md:pb-32 relative z-10">
-        <div className="lg:col-span-8 flex flex-col gap-12 md:gap-16">
-          {/* Descripción */}
-          <div className="reveal">
-            <h2 className="text-2xl md:text-3xl font-display font-bold text-luxury-ink mb-6">
-              Descripción
-            </h2>
-            <p className="text-luxury-slate text-lg md:text-xl leading-relaxed font-light text-balance">
-              {project.longDescription}
-            </p>
+      {/* SCREENSHOT EN MARCO DE NAVEGADOR */}
+      {project.img && (
+        <section className="max-w-[1180px] mx-auto px-6 md:px-12 mt-14 md:mt-20">
+          <div className="reveal bg-luxury-card border border-luxury-line rounded-[18px] overflow-hidden shadow-[0_30px_60px_-40px_rgba(19,26,36,0.35)]">
+            {/* Barra del navegador con la URL real */}
+            <div className="flex items-center gap-2 px-4 py-3.5 border-b border-luxury-line bg-luxury-bg">
+              <span className="w-[11px] h-[11px] rounded-full bg-[#E4B7B2]" />
+              <span className="w-[11px] h-[11px] rounded-full bg-[#EBD6A3]" />
+              <span className="w-[11px] h-[11px] rounded-full bg-[#BFD8B8]" />
+              {displayUrl && (
+                <span className="ml-3 font-mono text-[11.5px] text-luxury-muted truncate">
+                  {displayUrl}
+                </span>
+              )}
+            </div>
+
+            <a
+              ref={imageLinkRef}
+              href={project.url_web || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block relative overflow-hidden lg:cursor-none"
+            >
+              <div className="absolute inset-0 bg-luxury-ink/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={project.img}
+                alt={project.title}
+                className="w-full object-cover transition-transform duration-700 lg:group-hover:scale-[1.03]"
+              />
+            </a>
           </div>
+        </section>
+      )}
 
-          {/* Características */}
-          {project.features.length > 0 && (
-            <div className="reveal">
-              <h2 className="text-2xl md:text-3xl font-display font-bold text-luxury-ink mb-6">
-                Características
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-                {project.features.map((feat, i) => (
-                  <div
-                    key={i}
-                    className="p-5 md:p-6 border border-luxury-border rounded-xl md:rounded-2xl bg-white shadow-sm flex items-start gap-4 transition-all hover:shadow-md"
-                  >
-                    <div className="w-2 h-2 rounded-full bg-luxury-accent mt-2 shrink-0"></div>
-                    <span className="font-medium text-luxury-ink text-sm md:text-base leading-snug">
-                      {feat}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Testimonio */}
-          {project.testimonial.quote && (
-            <div className="reveal bg-luxury-ink p-8 md:p-14 rounded-2xl md:rounded-[3rem] text-white relative overflow-hidden shadow-xl mt-4">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-luxury-accent/20 rounded-full blur-[80px] pointer-events-none"></div>
-              <p className="text-xl md:text-3xl font-light italic mb-8 relative z-10 leading-relaxed text-balance">
-                {`"${project.testimonial.quote}"`}
-              </p>
-              <div className="relative z-10">
-                <p className="font-bold text-luxury-accent uppercase tracking-widest text-sm mb-1">
-                  {project.testimonial.author}
+      {/* FICHA TÉCNICA + STACK */}
+      <section className="max-w-[1180px] mx-auto px-6 md:px-12 mt-14 md:mt-20">
+        {meta.length > 0 && (
+          <div className="reveal grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px bg-luxury-line border border-luxury-line rounded-[18px] overflow-hidden">
+            {meta.map((m) => (
+              <div key={m.label} className="bg-luxury-card p-6">
+                <p className="font-mono text-[10.5px] text-luxury-muted tracking-[0.06em]">
+                  {m.label}
                 </p>
-                <p className="text-white/60 text-xs md:text-sm font-medium">
-                  {project.testimonial.role}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Detalles del Proyecto */}
-          {(project.status || project.end_date) && (
-            <div className="reveal">
-              <h2 className="text-2xl md:text-3xl font-display font-bold text-luxury-ink mb-6">
-                Detalles del Proyecto
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-                {project.status && (
-                  <div className="p-5 md:p-6 border border-luxury-border rounded-xl md:rounded-2xl bg-white shadow-sm">
-                    <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
-                      Estado
-                    </p>
-                    <p className="text-luxury-ink font-bold text-sm md:text-base">
-                      {project.status}
-                    </p>
-                  </div>
-                )}
-                {project.year && (
-                  <div className="p-5 md:p-6 border border-luxury-border rounded-xl md:rounded-2xl bg-white shadow-sm">
-                    <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
-                      Fecha Inicio
-                    </p>
-                    <p className="text-luxury-ink font-bold text-sm md:text-base">
-                      {project.year}
-                    </p>
-                  </div>
-                )}
-                {project.end_date && (
-                  <div className="p-5 md:p-6 border border-luxury-border rounded-xl md:rounded-2xl bg-white shadow-sm">
-                    <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
-                      Fecha Fin
-                    </p>
-                    <p className="text-luxury-ink font-bold text-sm md:text-base">
-                      {project.end_date.split("-")[0]}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Sidebar */}
-        <aside className="lg:col-span-4 self-start w-full">
-          <div className="reveal lg:sticky top-32 bg-white border border-luxury-border p-4 md:p-8 rounded-2xl md:rounded-3xl shadow-sm">
-            <h3 className="font-display font-bold text-luxury-ink border-b border-luxury-border pb-4 mb-6 text-sm md:text-base tracking-widest">
-              FICHA TÉCNICA
-            </h3>
-            <div className="flex flex-col gap-6">
-              {/* Logo Empresa */}
-              {project.logo_url && (
-                <div className="flex justify-center pb-4 border-b border-luxury-border/50">
-                  <img
-                    src={project.logo_url}
-                    alt={`${project.title} logo`}
-                    className="max-h-16 max-w-[160px] object-contain"
-                  />
-                </div>
-              )}
-
-              {project.client && (
-                <div>
-                  <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-1.5">
-                    Cliente
-                  </p>
-                  <p className="text-luxury-ink font-bold text-sm md:text-base">
-                    {project.client}
-                  </p>
-                </div>
-              )}
-
-              {project.year && (
-                <div>
-                  <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-1.5">
-                    Año
-                  </p>
-                  <p className="text-luxury-ink font-bold text-sm md:text-base">
-                    {project.year}
-                    {project.end_date && ` — ${project.end_date.split("-")[0]}`}
-                  </p>
-                </div>
-              )}
-
-              {/* Framework */}
-              {project.framework_icon && (
-                <div>
-                  <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
-                    Framework
-                  </p>
-                  {project.framework_url ? (
+                <p className="font-display font-semibold text-luxury-ink mt-2 leading-snug">
+                  {m.label === "FRAMEWORK" && project.framework_url ? (
                     <a
                       href={project.framework_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-3 py-1.5 bg-luxury-bg border border-luxury-border rounded-full text-[10px] md:text-xs font-bold text-luxury-ink hover:border-luxury-accent transition-colors"
+                      className="inline-flex items-center gap-1.5 hover:text-luxury-accent-2 transition-colors"
                     >
-                      {project.framework_icon}
-                      <span className="text-luxury-accent">↗</span>
+                      {m.value}
+                      <span className="text-luxury-accent-2">↗</span>
                     </a>
                   ) : (
-                    <span className="px-3 py-1.5 bg-luxury-bg border border-luxury-border rounded-full text-[10px] md:text-xs font-bold text-luxury-ink">
-                      {project.framework_icon}
-                    </span>
+                    m.value
                   )}
-                </div>
-              )}
-
-              {/* GitHub */}
-              {project.github_url && (
-                <div>
-                  <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
-                    Repositorio
-                  </p>
-                  <a
-                    href={project.github_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-luxury-bg border border-luxury-border rounded-full text-[10px] md:text-xs font-bold text-luxury-ink hover:border-luxury-accent transition-colors"
-                  >
-                    GitHub
-                    <span className="text-luxury-accent">↗</span>
-                  </a>
-                </div>
-              )}
-
-              {/* Tecnologías */}
-              <div>
-                <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
-                  Tecnologías
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tech.map((t) => (
-                    <span
-                      key={t}
-                      className="px-3 py-1.5 bg-luxury-bg border border-luxury-border rounded-full text-[10px] md:text-xs font-bold text-luxury-ink"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
               </div>
+            ))}
+          </div>
+        )}
 
-              {/* Impacto */}
-              {project.stat && (
-                <div className="pt-4 mt-2 border-t border-luxury-border/50">
-                  <p className="text-[10px] md:text-xs text-luxury-slate font-bold uppercase tracking-widest mb-2">
-                    Impacto
-                  </p>
-                  <p className="text-3xl md:text-4xl font-bold text-luxury-accent tracking-tighter">
-                    {project.stat}
-                  </p>
-                </div>
-              )}
+        {project.tech.length > 0 && (
+          <div className="reveal mt-10">
+            <span className="block font-mono text-xs tracking-[0.14em] uppercase text-luxury-accent-2">
+              {"// Stack utilizado"}
+            </span>
+            <div className="flex flex-wrap gap-2 mt-4">
+              {project.tech.map((t) => (
+                <span
+                  key={t}
+                  className="tech-tag !h-9 !px-4 !text-[12.5px] !text-luxury-ink"
+                >
+                  {t}
+                </span>
+              ))}
             </div>
           </div>
-        </aside>
+        )}
+      </section>
+
+      {/* CARACTERÍSTICAS (si existen) */}
+      {project.features.length > 0 && (
+        <section className="max-w-[1180px] mx-auto px-6 md:px-12 mt-16 md:mt-24">
+          <span className="reveal block font-mono text-xs tracking-[0.14em] uppercase text-luxury-accent-2">
+            {"// Características"}
+          </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+            {project.features.map((feat, i) => (
+              <div
+                key={i}
+                className="reveal bg-luxury-card border border-luxury-line rounded-[14px] p-6 flex items-start gap-4"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-luxury-accent mt-2.5 shrink-0" />
+                <span className="text-luxury-ink text-[15px] leading-relaxed">
+                  {feat}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* TESTIMONIO (si existe) */}
+      {project.testimonial.quote && (
+        <section className="max-w-[1180px] mx-auto px-6 md:px-12 mt-16 md:mt-24">
+          <div className="reveal bg-luxury-card border border-luxury-line rounded-[18px] p-10 md:p-14 relative overflow-hidden">
+            <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-luxury-accent/10 blur-[70px] pointer-events-none" />
+            <p className="relative font-display text-xl md:text-3xl font-medium leading-snug text-luxury-ink text-balance">
+              {`“${project.testimonial.quote}”`}
+            </p>
+            {project.testimonial.author && (
+              <div className="relative mt-8">
+                <p className="font-mono text-xs tracking-[0.08em] text-luxury-accent-2">
+                  {project.testimonial.author}
+                </p>
+                {project.testimonial.role && (
+                  <p className="text-luxury-muted text-sm mt-1">
+                    {project.testimonial.role}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* IMPACTO (si existe) */}
+      {project.stat && (
+        <section className="max-w-[1180px] mx-auto px-6 md:px-12 mt-16 md:mt-24">
+          <div className="reveal bg-luxury-accent text-[#181206] rounded-[18px] px-10 py-12 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-10">
+            <span className="font-display text-5xl md:text-6xl font-bold tracking-[-0.03em]">
+              {project.stat}
+            </span>
+            <span className="font-mono text-xs tracking-[0.08em] opacity-70">
+              IMPACTO DEL PROYECTO
+            </span>
+          </div>
+        </section>
+      )}
+
+      {/* CIERRE */}
+      <section className="max-w-[1180px] mx-auto px-6 md:px-12 mt-20 md:mt-28 pb-24 md:pb-32">
+        <div className="reveal border-t border-luxury-border pt-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5">
+          <p className="font-display text-xl font-semibold text-luxury-ink">
+            ¿Quieres algo así para tu negocio?
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/#contact"
+              className="inline-flex items-center h-[50px] px-6 rounded-[11px] bg-luxury-accent text-[#151107] font-display font-semibold text-[15px] hover:bg-luxury-accent-2 transition-all"
+            >
+              Hablemos
+            </Link>
+            <Link
+              href="/proyectos"
+              className="inline-flex items-center h-[50px] px-6 rounded-[11px] border border-luxury-line text-luxury-ink font-display font-semibold text-[15px] hover:border-luxury-accent transition-all"
+            >
+              Ver más proyectos
+            </Link>
+          </div>
+        </div>
       </section>
 
       {/* CURSOR PERSONALIZADO */}
@@ -355,7 +367,7 @@ export default function ProjectPage() {
         ref={cursorRef}
         className="hidden lg:flex fixed top-0 left-0 w-32 h-32 bg-luxury-accent rounded-full z-[100] pointer-events-none items-center justify-center text-center scale-0 opacity-0"
       >
-        <span className="font-display font-bold text-xs tracking-wider text-luxury-ink">
+        <span className="font-display font-bold text-xs tracking-wider text-[#151107]">
           VISITAR WEB
         </span>
       </div>
