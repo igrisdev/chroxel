@@ -22,6 +22,14 @@
   body {
     @apply bg-luxury-bg text-luxury-ink font-body overflow-x-hidden antialiased;
   }
+
+  /* Compensa la navbar fija (78px) al saltar con anclas, para que la sección
+     quede justo debajo de la barra y no oculta tras ella. */
+  section[id],
+  header[id],
+  footer[id] {
+    scroll-margin-top: 92px;
+  }
 }
 
 /* ---------- Animaciones (V2) ---------- */
