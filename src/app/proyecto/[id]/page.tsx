@@ -115,7 +115,6 @@ export default function ProjectPage() {
   // deliberada aunque el proyecto tenga pocos campos llenos en Notion.
   const meta = [
     project.client && { label: "CLIENTE", value: project.client },
-    project.category && { label: "CATEGORÍA", value: project.category },
     project.year && {
       label: "AÑO",
       value: project.end_date
@@ -146,9 +145,6 @@ export default function ProjectPage() {
 
         <div className="mt-8">
           <div>
-            {/* {project.category && (
-              <span className="reveal tech-tag">{project.category}</span>
-            )} */}
             <div className="reveal flex items-center gap-4 md:gap-5 mt-4">
               {project.logo_url && (
                 <span className="shrink-0 w-14 h-14 md:w-[72px] md:h-[72px] rounded-2xl bg-luxury-card border border-luxury-line flex items-center justify-center p-2.5">

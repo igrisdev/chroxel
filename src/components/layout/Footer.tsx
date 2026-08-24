@@ -14,7 +14,12 @@ import {
 } from "@/lib/contact-schema";
 import logo from "../../../public/chroxel_logo_v2.png";
 
-const CORREO_AGENCIA = "johan.manuel.alvarez.pinta@gmail.com";
+// Correo de contacto: se toma de la variable de entorno si está definida,
+// de lo contrario se usa el valor por defecto. Debe llevar el prefijo
+// NEXT_PUBLIC_ porque el formulario corre en el navegador.
+const CORREO_AGENCIA =
+  process.env.NEXT_PUBLIC_CONTACT_EMAIL ||
+  "johan.manuel.alvarez.pinta@gmail.com";
 
 gsap.registerPlugin(ScrollTrigger);
 

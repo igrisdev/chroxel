@@ -77,11 +77,6 @@ export default function ProjectsPage() {
                     <div className="absolute inset-0 bg-gradient-to-br from-[#EEF1F4] to-[#E3E7EC]" />
                   )}
                   <div className="grid-grain absolute inset-0 opacity-40" />
-                  {proj.category && (
-                    <div className="absolute left-[18px] top-[18px] tech-tag">
-                      {proj.category}
-                    </div>
-                  )}
                 </div>
                 <div className="p-[22px]">
                   <h3 className="font-display text-[19px] font-semibold">
