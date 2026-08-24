@@ -49,8 +49,14 @@ export default function ProjectPage() {
       if (imageLink && cursor) {
         mm.add("(min-width: 1024px)", () => {
           gsap.set(cursor, { xPercent: -50, yPercent: -50 });
-          const xTo = gsap.quickTo(cursor, "x", { duration: 0.2, ease: "power3" });
-          const yTo = gsap.quickTo(cursor, "y", { duration: 0.2, ease: "power3" });
+          const xTo = gsap.quickTo(cursor, "x", {
+            duration: 0.2,
+            ease: "power3",
+          });
+          const yTo = gsap.quickTo(cursor, "y", {
+            duration: 0.2,
+            ease: "power3",
+          });
 
           const onMouseMove = (e: MouseEvent) => {
             xTo(e.clientX);
@@ -138,14 +144,26 @@ export default function ProjectPage() {
           TODOS LOS PROYECTOS
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-16 items-end mt-8">
+        <div className="mt-8">
           <div>
-            {project.category && (
+            {/* {project.category && (
               <span className="reveal tech-tag">{project.category}</span>
-            )}
-            <h1 className="reveal font-display text-4xl md:text-6xl font-bold text-luxury-ink tracking-[-0.035em] leading-[1.04] mt-4">
-              {project.title}
-            </h1>
+            )} */}
+            <div className="reveal flex items-center gap-4 md:gap-5 mt-4">
+              {project.logo_url && (
+                <span className="shrink-0 w-14 h-14 md:w-[72px] md:h-[72px] rounded-2xl bg-luxury-card border border-luxury-line flex items-center justify-center p-2.5">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={project.logo_url}
+                    alt={`Logo de ${project.client || project.title}`}
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </span>
+              )}
+              <h1 className="font-display text-4xl md:text-6xl font-bold text-luxury-ink tracking-[-0.035em] leading-[1.04]">
+                {project.title}
+              </h1>
+            </div>
             {project.longDescription && (
               <p className="reveal text-luxury-slate text-lg md:text-xl font-light leading-relaxed max-w-xl mt-5">
                 {project.longDescription}
@@ -161,8 +179,19 @@ export default function ProjectPage() {
                   className="inline-flex items-center gap-2 h-[50px] px-6 rounded-[11px] bg-luxury-accent text-[#151107] font-display font-semibold text-[15px] hover:bg-luxury-accent-2 hover:-translate-y-0.5 transition-all"
                 >
                   Visitar sitio
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M7 17L17 7M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      d="M7 17L17 7M9 7h8v8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </a>
               )}
@@ -173,7 +202,12 @@ export default function ProjectPage() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 h-[50px] px-6 rounded-[11px] border border-luxury-line text-luxury-ink font-display font-semibold text-[15px] hover:border-luxury-accent transition-all"
                 >
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                  <svg
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
                     <path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.4-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2.9-.3 2-.4 3-.4s2.1.1 3 .4c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z" />
                   </svg>
                   Repositorio
@@ -181,24 +215,12 @@ export default function ProjectPage() {
               )}
             </div>
           </div>
-
-          {/* Logo del cliente */}
-          {project.logo_url && (
-            <div className="reveal bg-luxury-card border border-luxury-line rounded-[18px] p-8 flex items-center justify-center min-h-[150px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={project.logo_url}
-                alt={`Logo de ${project.client || project.title}`}
-                className="max-h-20 max-w-[220px] object-contain"
-              />
-            </div>
-          )}
         </div>
       </section>
 
       {/* SCREENSHOT EN MARCO DE NAVEGADOR */}
       {project.img && (
-        <section className="max-w-[1180px] mx-auto px-6 md:px-12 mt-14 md:mt-20">
+        <section className="max-w-[1180px] mx-auto px-6 md:px-12 mt-10 ">
           <div className="reveal bg-luxury-card border border-luxury-line rounded-[18px] overflow-hidden shadow-[0_30px_60px_-40px_rgba(19,26,36,0.35)]">
             {/* Barra del navegador con la URL real */}
             <div className="flex items-center gap-2 px-4 py-3.5 border-b border-luxury-line bg-luxury-bg">
