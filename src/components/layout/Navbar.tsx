@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { name: "Servicios", href: "#services" },
   { name: "Proyectos", href: "#projects" },
   { name: "Método", href: "#process-wrapper" },
-  { name: "Stack", href: "#stats" },
+  // { name: "Stack", href: "#stats" },
 ];
 
 export default function Navbar() {
