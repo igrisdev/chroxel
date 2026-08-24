@@ -38,7 +38,12 @@ export default function ProjectDetail({
     () => {
       if (!project) return;
 
-      revealOnScroll(".reveal", { y: 26, duration: 0.9, stagger: 0.1 });
+      revealOnScroll(".reveal", {
+        y: 26,
+        duration: 0.9,
+        stagger: 0.1,
+        root: container.current,
+      });
       refreshTriggersWhenReady(container.current);
 
       const mm = gsap.matchMedia();

@@ -36,8 +36,10 @@ export default function Process() {
 
   useGSAP(
     () => {
-      revealOnScroll(".reveal-head", { y: 26, duration: 0.9 });
-      revealOnScroll(".step-row", { y: 30, stagger: 0.1 });
+      // `root` evita que el selector alcance elementos de otras secciones.
+      const root = container.current;
+      revealOnScroll(".reveal-head", { y: 26, duration: 0.9, root });
+      revealOnScroll(".step-row", { y: 30, stagger: 0.1, root });
 
       // Línea del timeline dibujándose con el scroll
       gsap.to(".timeline-line", {

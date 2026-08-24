@@ -20,7 +20,11 @@ export default function Footer() {
     () => {
       if (!isHome) return;
 
-      revealOnScroll(".cta-el", { y: 28, duration: 0.9 });
+      revealOnScroll(".cta-el", {
+        y: 28,
+        duration: 0.9,
+        root: container.current,
+      });
 
       // El wordmark gigante se desplaza al hacer scroll (encima del bucle
       // continuo que corre por CSS en la capa interna).

@@ -17,7 +17,7 @@ export default function ProjectsGrid({ projects }: { projects: IProject[] }) {
   useGSAP(
     () => {
       if (projects.length === 0) return;
-      revealOnScroll(".proj-card");
+      revealOnScroll(".proj-card", { root: container.current });
       refreshTriggersWhenReady(container.current);
     },
     { scope: container, dependencies: [projects] },

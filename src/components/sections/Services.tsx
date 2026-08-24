@@ -40,8 +40,10 @@ export default function Services() {
 
   useGSAP(
     () => {
-      revealOnScroll(".reveal-head", { y: 26, duration: 0.9 });
-      revealOnScroll(".service-card");
+      // `root` evita que el selector alcance elementos de otras secciones.
+      const root = container.current;
+      revealOnScroll(".reveal-head", { y: 26, duration: 0.9, root });
+      revealOnScroll(".service-card", { root });
       refreshTriggersWhenReady(container.current);
     },
     { scope: container },

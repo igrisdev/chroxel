@@ -58,6 +58,34 @@
   from { opacity: 0; }
   to { opacity: 1; }
 }
+@keyframes skeleton-shimmer {
+  100% { transform: translateX(100%); }
+}
+
+/* Bloque de carga. El brillo va en un ::after que se desplaza, así animamos
+   solo transform (compuesto por la GPU) en lugar de background-position. */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #ECEAE5;
+  border-radius: 8px;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.65),
+    transparent
+  );
+  animation: skeleton-shimmer 1.6s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after { animation: none; }
+}
 @keyframes modalIn {
   from { opacity: 0; transform: translateY(16px) scale(0.98); }
   to { opacity: 1; transform: none; }

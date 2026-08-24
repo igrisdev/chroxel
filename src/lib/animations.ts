@@ -9,6 +9,25 @@ interface RevealOptions {
   stagger?: number;
   /** Fracción del alto del viewport a partir de la cual se dispara la entrada. */
   triggerRatio?: number;
+  /**
+   * Elemento dentro del cual buscar cuando `targets` es un selector.
+   *
+   * Sin esto, un selector como ".reveal-head" recorre TODO el documento y una
+   * sección acabaría animando (y ocultando) los elementos de las demás, porque
+   * varias secciones comparten los mismos nombres de clase.
+   */
+  root?: HTMLElement | null;
+}
+
+/** Resuelve los elementos a animar, limitándolos a `root` si se indica. */
+function resolveTargets(
+  targets: gsap.DOMTarget,
+  root?: HTMLElement | null,
+): HTMLElement[] {
+  if (typeof targets === "string" && root) {
+    return Array.from(root.querySelectorAll<HTMLElement>(targets));
+  }
+  return gsap.utils.toArray<HTMLElement>(targets);
 }
 
 /**
@@ -79,9 +98,15 @@ function observe(
 /** Revela elementos con un desplazamiento suave al entrar en el viewport. */
 export function revealOnScroll(
   targets: gsap.DOMTarget,
-  { y = 40, duration = 0.8, stagger = 0.12, triggerRatio = 0.9 }: RevealOptions = {},
+  {
+    y = 40,
+    duration = 0.8,
+    stagger = 0.12,
+    triggerRatio = 0.9,
+    root,
+  }: RevealOptions = {},
 ) {
-  const elements = gsap.utils.toArray<HTMLElement>(targets);
+  const elements = resolveTargets(targets, root);
   if (elements.length === 0) return;
 
   gsap.set(elements, { opacity: 0, y });
