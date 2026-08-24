@@ -271,7 +271,6 @@ export default function ProjectPage() {
                       className="inline-flex items-center gap-1.5 hover:text-luxury-accent-2 transition-colors"
                     >
                       {m.value}
-                      <span className="text-luxury-accent-2">↗</span>
                     </a>
                   ) : (
                     m.value
