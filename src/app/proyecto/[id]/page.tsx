@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import Link from "next/link";
 import { IProjectDetail } from "@/lib/data";
 import { revealOnScroll, refreshTriggersWhenReady } from "@/lib/animations";
+import ContactModal from "@/components/contact/ContactModal";
 
 /** Deriva una etiqueta legible del framework a partir de su URL. */
 function frameworkLabel(project: IProjectDetail): string | null {
@@ -26,6 +27,7 @@ export default function ProjectPage() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [project, setProject] = useState<IProjectDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [contactOpen, setContactOpen] = useState(false);
 
   useEffect(() => {
     fetch(`/api/projects/${id}`)
@@ -363,12 +365,13 @@ export default function ProjectPage() {
             ¿Quieres algo así para tu negocio?
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link
-              href="/#contact"
+            <button
+              type="button"
+              onClick={() => setContactOpen(true)}
               className="inline-flex items-center h-[50px] px-6 rounded-[11px] bg-luxury-accent text-[#151107] font-display font-semibold text-[15px] hover:bg-luxury-accent-2 transition-all"
             >
               Hablemos
-            </Link>
+            </button>
             <Link
               href="/proyectos"
               className="inline-flex items-center h-[50px] px-6 rounded-[11px] border border-luxury-line text-luxury-ink font-display font-semibold text-[15px] hover:border-luxury-accent transition-all"
@@ -388,6 +391,14 @@ export default function ProjectPage() {
           VISITAR WEB
         </span>
       </div>
+
+      {/* MODAL DE CONTACTO */}
+      <ContactModal
+        open={contactOpen}
+        onClose={() => setContactOpen(false)}
+        title={`Hablemos sobre tu proyecto`}
+        description="Cuéntanos qué necesitas construir. Respondemos en menos de 24 horas."
+      />
     </div>
   );
 }
