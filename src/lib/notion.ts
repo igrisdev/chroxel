@@ -3,34 +3,9 @@ import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 const NOTION_API_KEY = process.env.NOTION_API_KEY!;
 const DATABASE_ID = process.env.NOTION_DATABASE_ID!;
 
-export interface IProject {
-  id: string;
-  slug: string;
-  category: string;
-  title: string;
-  img: string;
-  client: string;
-  url_web: string;
-  year: string;
-  tech: string[];
-}
+import type { IProject, IProjectDetail } from "@/lib/data";
 
-export interface IProjectDetail extends IProject {
-  longDescription: string;
-  stat: string;
-  features: string[];
-  testimonial: {
-    quote: string;
-    author: string;
-    role: string;
-  };
-  github_url?: string;
-  logo_url?: string;
-  framework_icon?: string;
-  framework_url?: string;
-  status?: string;
-  end_date?: string;
-}
+export type { IProject, IProjectDetail };
 
 async function queryDatabase(filter?: object, sorts?: object[]) {
   const url = `https://api.notion.com/v1/databases/${DATABASE_ID}/query`;

@@ -3,10 +3,9 @@
 import { useState } from "react";
 import { formatEmailBody } from "@/lib/utils";
 import { contactSchema, type ContactErrors } from "@/lib/contact-schema";
+import { siteConfig } from "@/lib/site";
 
-const CORREO_AGENCIA =
-  process.env.NEXT_PUBLIC_CONTACT_EMAIL ||
-  "johan.manuel.alvarez.pinta@gmail.com";
+const CORREO_AGENCIA = siteConfig.email;
 
 interface ContactFormProps {
   /** Se llama tras abrir el cliente de correo (p. ej. para cerrar el modal). */
