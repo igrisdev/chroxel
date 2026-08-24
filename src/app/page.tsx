@@ -2,7 +2,7 @@ import Hero from "@/components/sections/Hero";
 import Services from "@/components/sections/Services";
 import Projects from "@/components/sections/Projects";
 import Process from "@/components/sections/Process";
-import Stats from "@/components/sections/Stats";
+// import Stats from "@/components/sections/Stats";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
       <Services />
       <Projects />
       <Process />
-      <Stats />
+      {/* <Stats /> */}
     </>
   );
 }
