@@ -1,0 +1,17 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1280, "h": 4700, "title": "V1 — Home (actual)" },
+    { "file": "Proyectos.dc.html", "x": 1400, "y": 0, "w": 1280, "h": 1360, "title": "Proyectos (Notion)" },
+    { "file": "MainV2.dc.html", "x": 2800, "y": 0, "w": 1280, "h": 3760, "title": "V2 — Home (clara + movimiento)" }
+  ],
+  "annotations": [
+    { "id": "nota-dir", "x": 0, "y": -170, "w": 470, "text": "V1 — Dirección técnico / SaaS en claro.\nMantiene el ADN de Chroxel (dorado #C5A059, Space Grotesk) + JetBrains Mono. Nota: la sección 'Proyectos que funcionan' quedó desplazada al arrastrarla en el editor; puedo re-alinearla cuando quieras." },
+    { "id": "nota-v2", "x": 2800, "y": -170, "w": 480, "text": "V2 — Fondo claro, editorial y con movimiento REAL en el preview: aurora animada en el hero, marquee de stack, contadores que suben al entrar en viewport, y wordmark en scroll al final. Sin repetir cifras entre secciones (las métricas globales viven solo en la franja dorada)." },
+    { "id": "gsap-hero", "x": 4180, "y": 60, "w": 300, "text": "GSAP · HERO\ngsap.from('.hero *', stagger + expo.out al cargar. SplitText en el titular para revelar palabra por palabra. Parallax suave del aurora con scrub." },
+    { "id": "gsap-projects", "x": 4180, "y": 820, "w": 300, "text": "GSAP · PROYECTOS\nScrollTrigger batch: cada card entra con y:40 + fade escalonado. En el card destacado, un parallax leve de la imagen (yPercent) con scrub." },
+    { "id": "gsap-process", "x": 4180, "y": 1560, "w": 300, "text": "GSAP · MÉTODO\nDibuja la línea del timeline con scaleY 0→1 ligada al scroll (scrub). Cada fila entra al cruzar el 80% del viewport." },
+    { "id": "gsap-stats", "x": 4180, "y": 2140, "w": 300, "text": "GSAP · CIFRAS\nCount-up de los números al entrar (ya prototipado aquí en JS). Con GSAP: gsap.to({v:0}, {v:target, snap, onUpdate}) + ScrollTrigger." },
+    { "id": "gsap-cta", "x": 4180, "y": 2600, "w": 300, "text": "GSAP · CIERRE\nEl wordmark gigante se mueve en horizontal ligado al scroll (x + scrub) para el efecto 'al llegar al final se mueve'. Pin opcional de la sección mientras cruza." }
+  ],
+  "launch": { "view": "canvas" }
+}

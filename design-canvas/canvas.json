@@ -1,0 +1,10 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1280, "h": 4020, "title": "Home — rediseño" },
+    { "file": "Proyectos.dc.html", "x": 1400, "y": 0, "w": 1280, "h": 1360, "title": "Proyectos (Notion)" }
+  ],
+  "annotations": [
+    { "id": "nota-dir", "x": 0, "y": -150, "w": 460, "text": "Dirección: técnico / producto SaaS.\nMantiene el ADN de Chroxel (dorado #C5A059, Space Grotesk) y añade JetBrains Mono para etiquetas técnicas. Los números entre [corchetes] son placeholders a reemplazar con datos reales." }
+  ],
+  "launch": { "view": "canvas" }
+}

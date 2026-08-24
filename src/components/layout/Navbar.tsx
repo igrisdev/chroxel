@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
+import logo from "../../../public/chroxel_logo_v2.png";
 
 const NAV_LINKS = [
-  { name: "INICIO", href: "#hero" },
-  { name: "PROYECTOS", href: "#projects" },
-  { name: "SERVICIOS", href: "#services" },
-  { name: "MÉTODO", href: "#process-wrapper" },
-  { name: "CONTACTO", href: "#contact" },
+  { name: "Servicios", href: "#services" },
+  { name: "Proyectos", href: "#projects" },
+  { name: "Método", href: "#process-wrapper" },
+  { name: "Stack", href: "#stats" },
 ];
 
 export default function Navbar() {
@@ -17,25 +18,16 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
-  // Verificamos si estamos en la ruta principal
   const isHome = pathname === "/";
 
-  // Efecto para detectar el scroll y aplicar el backdrop sutil
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Efecto para bloquear el scroll de la página cuando el menú móvil está abierto
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "unset";
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -43,71 +35,81 @@ export default function Navbar() {
 
   return (
     <>
-      {/* HEADER PRINCIPAL (Se mantiene arriba del menú móvil) */}
       <nav
-        className={`fixed top-0 w-full z-[100] px-8 py-6 flex justify-between items-center transition-all duration-300 
-        ${!isOpen ? "mix-blend-difference" : ""} 
-        ${isScrolled && !isOpen ? "bg-black/10 backdrop-blur-md" : "bg-transparent"}
-        `}
+        className={`fixed top-0 w-full z-[100] transition-all duration-300 ${
+          isScrolled && !isOpen
+            ? "bg-luxury-bg/82 backdrop-blur-md border-b border-luxury-border"
+            : "bg-transparent border-b border-transparent"
+        }`}
       >
-        {/* LOGO (Enlace a Inicio, simplemente cierra el menú móvil si está abierto) */}
-        <Link
-          href="/"
-          onClick={() => setIsOpen(false)}
-          className="font-display items-center flex gap-2 font-bold text-2xl tracking-widest text-white cursor-pointer hover:text-luxury-accent transition-colors relative z-[110]"
-        >
-          <div className="size-6">
-            <img src="/chroxel_logo_v2.png" alt="logo chroxel" />
-          </div>
-          <span>CHROXEL</span>
-        </Link>
+        <div className="max-w-[1180px] mx-auto px-6 md:px-12 h-[78px] flex items-center justify-between">
+          <Link
+            href="/"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-2.5 relative z-[110]"
+          >
+            <Image
+              src={logo}
+              alt="Chroxel"
+              width={30}
+              height={30}
+              priority
+              className="w-[30px] h-[30px] object-contain"
+            />
+            <span className="font-display font-bold text-[19px] tracking-[0.16em] text-luxury-ink">
+              CHROXEL
+            </span>
+          </Link>
 
-        {/* SOLO SE MUESTRAN LOS ENLACES Y EL BOTÓN MÓVIL SI ESTAMOS EN INICIO "/" */}
-        {isHome && (
-          <>
-            {/* MENÚ ESCRITORIO */}
-            <div className="hidden md:flex space-x-8 text-sm font-display tracking-widest text-white/70 relative z-[110]">
-              {NAV_LINKS.map((link) => (
+          {isHome && (
+            <>
+              <div className="hidden md:flex items-center gap-8 relative z-[110]">
+                {NAV_LINKS.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className="font-display text-sm font-medium text-luxury-slate hover:text-luxury-ink transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
                 <Link
-                  key={link.name}
-                  href={link.href}
-                  className="hover:text-luxury-accent transition-colors uppercase"
+                  href="#contact"
+                  className="inline-flex items-center h-[42px] px-5 rounded-[10px] bg-luxury-accent text-[#151107] font-display font-semibold text-sm hover:bg-luxury-accent-2 transition-colors"
                 >
-                  {link.name}
+                  Iniciar proyecto
                 </Link>
-              ))}
-            </div>
+              </div>
 
-            {/* BOTÓN HAMBURGUESA (MÓVIL) CON ANIMACIÓN DE X PERFECTA */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden relative z-[110] w-8 h-6 flex items-center justify-center focus:outline-none"
-              aria-label="Abrir menú"
-            >
-              <span
-                className={`absolute h-[2px] w-full bg-white transition-all duration-300 ease-in-out ${
-                  isOpen ? "rotate-45" : "-translate-y-[10px]"
-                }`}
-              />
-              <span
-                className={`absolute h-[2px] w-full bg-white transition-all duration-300 ease-in-out ${
-                  isOpen ? "opacity-0" : "opacity-100"
-                }`}
-              />
-              <span
-                className={`absolute h-[2px] w-full bg-white transition-all duration-300 ease-in-out ${
-                  isOpen ? "-rotate-45" : "translate-y-[10px]"
-                }`}
-              />
-            </button>
-          </>
-        )}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="md:hidden relative z-[110] w-8 h-6 flex items-center justify-center focus:outline-none"
+                aria-label="Abrir menú"
+              >
+                <span
+                  className={`absolute h-[2px] w-full bg-luxury-ink transition-all duration-300 ease-in-out ${
+                    isOpen ? "rotate-45" : "-translate-y-[10px]"
+                  }`}
+                />
+                <span
+                  className={`absolute h-[2px] w-full bg-luxury-ink transition-all duration-300 ease-in-out ${
+                    isOpen ? "opacity-0" : "opacity-100"
+                  }`}
+                />
+                <span
+                  className={`absolute h-[2px] w-full bg-luxury-ink transition-all duration-300 ease-in-out ${
+                    isOpen ? "-rotate-45" : "translate-y-[10px]"
+                  }`}
+                />
+              </button>
+            </>
+          )}
+        </div>
       </nav>
 
-      {/* MENÚ MÓVIL FULLSCREEN CON ANIMACIÓN DE CÍRCULO (SOLO EN INICIO) */}
       {isHome && (
         <div
-          className={`fixed inset-0 bg-[#0f141e] z-[90] flex flex-col items-center justify-center transition-all duration-700 ease-in-out md:hidden`}
+          className="fixed inset-0 bg-luxury-bg z-[90] flex flex-col items-center justify-center transition-all duration-700 ease-in-out md:hidden"
           style={{
             clipPath: isOpen
               ? "circle(150% at calc(100% - 2.5rem) 2.5rem)"
@@ -120,11 +122,18 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="text-3xl font-display font-light tracking-[0.2em] text-white hover:text-luxury-accent transition-colors uppercase"
+                className="text-3xl font-display font-medium tracking-[0.1em] text-luxury-ink hover:text-luxury-accent-2 transition-colors"
               >
                 {link.name}
               </Link>
             ))}
+            <Link
+              href="#contact"
+              onClick={() => setIsOpen(false)}
+              className="mt-4 inline-flex items-center h-[50px] px-7 rounded-[11px] bg-luxury-accent text-[#151107] font-display font-semibold"
+            >
+              Iniciar proyecto
+            </Link>
           </div>
         </div>
       )}

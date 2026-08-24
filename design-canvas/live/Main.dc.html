@@ -1,0 +1,403 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+  <style>
+    :root{
+      --bg:#FAFAFA; --card:#FFFFFF; --ink:#1F2937; --ink-900:#131A24;
+      --slate:#4B5563; --muted:#6B7280; --border:#E9E7E2; --border-2:#E5E7EB;
+      --accent:#C5A059; --accent-2:#B0894A; --accent-soft:rgba(197,160,89,0.10);
+      --disp:'Space Grotesk',sans-serif; --body:'Inter',sans-serif; --mono:'JetBrains Mono',monospace;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+    a{color:var(--accent);text-decoration:none;}
+    a:hover{color:var(--accent-2);}
+    .wrap{max-width:1180px;margin:0 auto;padding:0 48px;}
+    .disp{font-family:var(--disp);}
+    .mono{font-family:var(--mono);}
+    .ey{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--accent-2);text-transform:uppercase;font-weight:500;}
+    .btn{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 24px;border-radius:10px;font-family:var(--disp);font-weight:600;font-size:14.5px;letter-spacing:.01em;cursor:pointer;transition:all .2s;border:1px solid transparent;}
+    .btn-primary{background:var(--ink-900);color:#fff;}
+    .btn-primary:hover{background:#000;color:#fff;}
+    .btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--border-2);}
+    .btn-ghost:hover{border-color:var(--accent);color:var(--ink);}
+    .tag{display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:7px;background:#fff;border:1px solid var(--border-2);font-family:var(--mono);font-size:11.5px;font-weight:500;color:var(--slate);}
+    .card{background:var(--card);border:1px solid var(--border-2);border-radius:16px;}
+    .sec{padding:112px 0;}
+    h2.title{font-family:var(--disp);font-size:44px;line-height:1.08;font-weight:700;letter-spacing:-.02em;margin:14px 0 0;}
+    .lead{color:var(--slate);font-size:18px;line-height:1.65;font-weight:300;}
+    .gold{color:var(--accent-2);}
+  </style>
+</helmet>
+
+<div style="background: var(--bg); width: 1265px; height: 4658px; box-sizing: border-box; max-width: none; max-height: none; flex-grow: 0; flex-shrink: 0; flex-basis: auto; position: relative">
+
+  <!-- NAV -->
+  <nav style="position: absolute; top: 0px; z-index: 50; background: rgba(250,250,250,.82); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-2); left: 0px; width: 1265px; height: 73px; box-sizing: border-box; max-width: none; max-height: none; min-width: 0; min-height: 0">
+    <div class="wrap" style="height:72px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:26px;height:26px;border-radius:7px;background:var(--ink-900);display:flex;align-items:center;justify-content:center;">
+          <div style="width:11px;height:11px;border:2px solid var(--accent);border-radius:3px;"></div>
+        </div>
+        <span class="disp" style="font-weight:700;font-size:19px;letter-spacing:.16em;">CHROXEL</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:34px;">
+        <a href="#" class="disp" style="color:var(--slate);font-size:14px;font-weight:500;">Servicios</a>
+        <a href="#" class="disp" style="color:var(--slate);font-size:14px;font-weight:500;">Proyectos</a>
+        <a href="#" class="disp" style="color:var(--slate);font-size:14px;font-weight:500;">Método</a>
+        <a href="#" class="disp" style="color:var(--slate);font-size:14px;font-weight:500;">Stack</a>
+        <a href="#" class="btn btn-primary" style="height:42px;padding:0 20px;font-size:14px;">Iniciar proyecto</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section style="position: absolute; overflow: hidden; border-bottom: 1px solid var(--border-2); left: 0px; top: 73px; width: 1265px; height: 728px; box-sizing: border-box; max-width: none; max-height: none; min-width: 0; min-height: 0">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:56px 56px;opacity:.5;-webkit-mask-image:radial-gradient(circle at 70% 30%,#000,transparent 75%);mask-image:radial-gradient(circle at 70% 30%,#000,transparent 75%);"></div>
+    <div class="wrap" style="position:relative;padding:96px 48px 84px;display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px;border-radius:999px;background:var(--accent-soft);border:1px solid rgba(197,160,89,.28);">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);"></span>
+          <span class="mono" style="font-size:11.5px;letter-spacing:.08em;color:var(--accent-2);font-weight:500;">DISPONIBLES PARA NUEVOS PROYECTOS</span>
+        </div>
+        <h1 class="disp" style="font-size:60px;line-height:1.04;font-weight:700;letter-spacing:-.03em;margin:22px 0 0;">
+          Software a medida,<br>construido para <span class="gold">escalar</span>.
+        </h1>
+        <p class="lead" style="max-width:480px;margin:22px 0 0;font-size:19px;">
+          Diseñamos y desarrollamos plataformas web, sistemas internos y productos digitales con ingeniería sólida y una obsesión por el detalle.
+        </p>
+        <div style="display:flex;gap:12px;margin-top:34px;">
+          <a href="#" class="btn btn-primary">
+            Agenda una consultoría
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </a>
+          <a href="#" class="btn btn-ghost">Ver proyectos</a>
+        </div>
+        <div style="display:flex;gap:40px;margin-top:52px;">
+          <div>
+            <div class="disp" style="font-size:30px;font-weight:700;letter-spacing:-.02em;">[+40]</div>
+            <div class="mono" style="font-size:11.5px;color:var(--muted);letter-spacing:.06em;margin-top:4px;">PROYECTOS ENTREGADOS</div>
+          </div>
+          <div style="width:1px;background:var(--border-2);"></div>
+          <div>
+            <div class="disp" style="font-size:30px;font-weight:700;letter-spacing:-.02em;">99.9<span class="gold">%</span></div>
+            <div class="mono" style="font-size:11.5px;color:var(--muted);letter-spacing:.06em;margin-top:4px;">UPTIME PROMEDIO</div>
+          </div>
+          <div style="width:1px;background:var(--border-2);"></div>
+          <div>
+            <div class="disp" style="font-size:30px;font-weight:700;letter-spacing:-.02em;">[X] días</div>
+            <div class="mono" style="font-size:11.5px;color:var(--muted);letter-spacing:.06em;margin-top:4px;">TIME-TO-LAUNCH</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product / terminal mock -->
+      <div class="card" style="padding:0;overflow:hidden;box-shadow:0 30px 60px -30px rgba(19,26,36,.25);">
+        <div style="display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid var(--border-2);background:#FBFBFA;">
+          <span style="width:11px;height:11px;border-radius:50%;background:#E4B7B2;"></span>
+          <span style="width:11px;height:11px;border-radius:50%;background:#EBD6A3;"></span>
+          <span style="width:11px;height:11px;border-radius:50%;background:#BFD8B8;"></span>
+          <span class="mono" style="margin-left:10px;font-size:11.5px;color:var(--muted);">chroxel — deploy.log</span>
+        </div>
+        <div style="padding:22px 20px;font-family:var(--mono);font-size:12.5px;line-height:2;color:var(--slate);">
+          <div><span class="gold">$</span> chroxel build --prod</div>
+          <div style="color:var(--muted);">→ compilando módulos ......... <span style="color:#5B8A5B;">ok</span></div>
+          <div style="color:var(--muted);">→ optimizando assets ......... <span style="color:#5B8A5B;">ok</span></div>
+          <div style="color:var(--muted);">→ tests (128) ............... <span style="color:#5B8A5B;">passed</span></div>
+          <div style="margin-top:6px;"><span class="gold">✓</span> desplegado en <span style="color:var(--ink);">1.9s</span></div>
+        </div>
+        <div style="border-top:1px solid var(--border-2);padding:16px 20px;display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">PostgreSQL</span><span class="tag">AWS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <section style="border-bottom: 1px solid var(--border-2); background: #fff; position: absolute; left: 0px; top: 801px; width: 1265px; height: 97px; box-sizing: border-box; max-width: none; max-height: none; min-width: 0; min-height: 0">
+    <div class="wrap" style="padding:34px 48px;display:flex;align-items:center;gap:40px;">
+      <span class="mono" style="font-size: 13px; color: var(--muted); letter-spacing: .08em; white-space: nowrap">CONFÍAN EN NOSOTROS</span>
+      <div style="display:flex;gap:44px;align-items:center;flex:1;justify-content:space-between;opacity:.5;">
+        <span class="disp" style="font-size:22px;font-weight:700;letter-spacing:-.01em;">Acme Corp</span>
+        <span class="disp" style="font-size:22px;font-weight:700;">Nova·Labs</span>
+        <span class="disp" style="font-size:22px;font-weight:700;font-style:italic;">Vértice</span>
+        <span class="disp" style="font-size:22px;font-weight:700;letter-spacing:.1em;">QUANTA</span>
+        <span class="disp" style="font-size:22px;font-weight:700;">Meridian</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES / CAPABILITIES -->
+  <section class="sec" style="background: var(--bg); position: absolute; left: 0px; top: 898px; width: 1265px; height: 714px; box-sizing: border-box; max-width: none; max-height: none; min-width: 0; min-height: 0">
+    <div class="wrap">
+      <span class="ey">// Lo que construimos</span>
+      <h2 class="title" style="max-width:620px;">Capacidades de ingeniería,<br>de la idea al <span class="gold">deploy</span>.</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:48px;">
+
+        <div class="card" style="padding:32px;">
+          <div style="width:44px;height:44px;border-radius:11px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent-2);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 6l-6 6 6 6M16 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <h3 class="disp" style="font-size:21px;font-weight:600;margin:22px 0 10px;">Desarrollo Web</h3>
+          <p style="color:var(--slate);font-size:15px;line-height:1.6;margin:0;">Aplicaciones y sitios a medida con arquitecturas modernas, enfocadas en rendimiento, SEO y mantenibilidad.</p>
+          <div style="display:flex;gap:7px;margin-top:20px;flex-wrap:wrap;"><span class="tag">Next.js</span><span class="tag">React</span><span class="tag">Node</span></div>
+        </div>
+
+        <div class="card" style="padding:32px;">
+          <div style="width:44px;height:44px;border-radius:11px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent-2);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 19l7-7-4-4-7 7v4h4zM14 6l4 4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <h3 class="disp" style="font-size:21px;font-weight:600;margin:22px 0 10px;">Diseño UI/UX</h3>
+          <p style="color:var(--slate);font-size:15px;line-height:1.6;margin:0;">Interfaces claras y sistemas de diseño consistentes que guían al usuario y transmiten la solidez de tu marca.</p>
+          <div style="display:flex;gap:7px;margin-top:20px;flex-wrap:wrap;"><span class="tag">Figma</span><span class="tag">Design System</span></div>
+        </div>
+
+        <div class="card" style="padding:32px;">
+          <div style="width:44px;height:44px;border-radius:11px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent-2);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="6" rx="8" ry="3"></ellipse><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <h3 class="disp" style="font-size:21px;font-weight:600;margin:22px 0 10px;">Sistemas Web</h3>
+          <p style="color:var(--slate);font-size:15px;line-height:1.6;margin:0;">Plataformas internas, paneles y automatizaciones que ordenan procesos críticos con datos en tiempo real.</p>
+          <div style="display:flex;gap:7px;margin-top:20px;flex-wrap:wrap;"><span class="tag">PostgreSQL</span><span class="tag">APIs</span><span class="tag">Dashboards</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS (Notion) -->
+  
+
+  <!-- PROCESS -->
+  <section class="sec" style="background: var(--bg); position: absolute; left: 0px; top: 2926px; width: 1265px; height: 565px; box-sizing: border-box; max-width: none; max-height: none; min-width: 0; min-height: 0">
+    <div class="wrap">
+      <span class="ey">// Cómo trabajamos</span>
+      <h2 class="title">Un método, cuatro <span class="gold">fases</span>.</h2>
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin-top:48px;">
+        <div class="card" style="padding:28px;">
+          <div class="mono gold" style="font-size:13px;font-weight:500;">01 / DESCUBRIMIENTO</div>
+          <h3 class="disp" style="font-size:19px;font-weight:600;margin:14px 0 8px;">Inmersión</h3>
+          <p style="color:var(--slate);font-size:14px;line-height:1.6;margin:0;">Entendemos el negocio, los usuarios y los requisitos técnicos antes de escribir una línea.</p>
+        </div>
+        <div class="card" style="padding:28px;">
+          <div class="mono gold" style="font-size:13px;font-weight:500;">02 / DISEÑO</div>
+          <h3 class="disp" style="font-size:19px;font-weight:600;margin:14px 0 8px;">Conceptualización</h3>
+          <p style="color:var(--slate);font-size:14px;line-height:1.6;margin:0;">Arquitectura de información, prototipos y un sistema de diseño listo para escalar.</p>
+        </div>
+        <div class="card" style="padding:28px;">
+          <div class="mono gold" style="font-size:13px;font-weight:500;">03 / INGENIERÍA</div>
+          <h3 class="disp" style="font-size:19px;font-weight:600;margin:14px 0 8px;">Construcción</h3>
+          <p style="color:var(--slate);font-size:14px;line-height:1.6;margin:0;">Código limpio y probado, con integración continua y revisiones en cada iteración.</p>
+        </div>
+        <div class="card" style="padding:28px;border-color:rgba(197,160,89,.4);">
+          <div class="mono gold" style="font-size:13px;font-weight:500;">04 / LANZAMIENTO</div>
+          <h3 class="disp" style="font-size:19px;font-weight:600;margin:14px 0 8px;">Deploy &amp; soporte</h3>
+          <p style="color:var(--slate);font-size:14px;line-height:1.6;margin:0;">Despliegue estratégico, monitoreo y mejora continua tras salir a producción.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAND -->
+  <section style="background: var(--ink-900); color: #fff; position: absolute; overflow: hidden; left: 0px; top: 3491px; width: 1265px; height: 240px; box-sizing: border-box; max-width: none; max-height: none; min-width: 0; min-height: 0">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:56px 56px;"></div>
+    <div class="wrap" style="position:relative;padding:80px 48px;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;">
+      <div>
+        <div class="disp" style="font-size:46px;font-weight:700;letter-spacing:-.03em;">[+40]</div>
+        <div class="mono" style="font-size:12px;color:rgba(255,255,255,.55);margin-top:6px;letter-spacing:.05em;">PROYECTOS</div>
+      </div>
+      <div>
+        <div class="disp" style="font-size:46px;font-weight:700;letter-spacing:-.03em;">99.9<span class="gold">%</span></div>
+        <div class="mono" style="font-size:12px;color:rgba(255,255,255,.55);margin-top:6px;letter-spacing:.05em;">UPTIME</div>
+      </div>
+      <div>
+        <div class="disp" style="font-size:46px;font-weight:700;letter-spacing:-.03em;">[X]<span class="gold">/5</span></div>
+        <div class="mono" style="font-size:12px;color:rgba(255,255,255,.55);margin-top:6px;letter-spacing:.05em;">SATISFACCIÓN</div>
+      </div>
+      <div>
+        <div class="disp" style="font-size:46px;font-weight:700;letter-spacing:-.03em;">24/7</div>
+        <div class="mono" style="font-size:12px;color:rgba(255,255,255,.55);margin-top:6px;letter-spacing:.05em;">SOPORTE</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT CTA -->
+  <section class="sec" style="background: var(--bg); position: absolute; left: 0px; top: 3731px; width: 1265px; height: 657px; box-sizing: border-box; max-width: none; max-height: none; min-width: 0; min-height: 0">
+    <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;">
+      <div>
+        <span class="ey">// Tu próximo paso</span>
+        <h2 class="title" style="font-size:48px;">Hablemos de tu <span class="gold">proyecto</span>.</h2>
+        <p class="lead" style="max-width:400px;margin-top:18px;">Cuéntanos qué necesitas construir. Respondemos en menos de 24 horas para agendar una sesión de descubrimiento.</p>
+        <div style="display:flex;gap:12px;margin-top:28px;">
+          <a href="#" class="btn" style="background:#1FA855;color:#fff;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12c0 2.1.6 4.2 1.6 6L0 24l6-1.6c1.8 1 3.8 1.5 6 1.5 6.6 0 12-5.4 12-12S18.6 0 12 0zm5.5 14.3c-.3.9-1.5 1.6-2.4 1.7-.9.1-1.7.5-3.5-.7-3-1.3-5-4.4-5.2-4.6-.2-.2-1.3-1.6-1.3-3.1 0-1.5.8-2.2 1.1-2.5.3-.3.6-.4.8-.4h.6c.2 0 .5-.1.7.5l.9 2.2c.1.2.1.4 0 .5l-.5.9c-.2.2-.4.4-.2.8.8 1.5 2 2.1 3 2.6.3.2.5.1.7-.1l.9-1c.2-.3.4-.2.6-.1l2.2 1c.2.1.4.2.4.5z"></path></svg>
+            WhatsApp
+          </a>
+          <a href="#" class="btn btn-ghost">Enviar correo</a>
+        </div>
+      </div>
+      <div class="card" style="padding:32px;box-shadow:0 30px 60px -40px rgba(19,26,36,.3);">
+        <div style="margin-bottom:18px;">
+          <label class="mono" style="font-size:11px;color:var(--muted);letter-spacing:.06em;">NOMBRE O EMPRESA</label>
+          <div style="height:46px;border:1px solid var(--border-2);border-radius:10px;margin-top:7px;display:flex;align-items:center;padding:0 14px;color:var(--muted);font-size:14px;">Acme Corp</div>
+        </div>
+        <div style="margin-bottom:18px;">
+          <label class="mono" style="font-size:11px;color:var(--muted);letter-spacing:.06em;">EMAIL O TELÉFONO</label>
+          <div style="height:46px;border:1px solid var(--border-2);border-radius:10px;margin-top:7px;display:flex;align-items:center;padding:0 14px;color:var(--muted);font-size:14px;">hola@acme.com</div>
+        </div>
+        <div style="margin-bottom:22px;">
+          <label class="mono" style="font-size:11px;color:var(--muted);letter-spacing:.06em;">TU PROYECTO</label>
+          <div style="height:88px;border:1px solid var(--border-2);border-radius:10px;margin-top:7px;padding:12px 14px;color:var(--muted);font-size:14px;">Necesitamos una plataforma para…</div>
+        </div>
+        <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">Enviar solicitud</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background: var(--ink-900); color: #fff; position: absolute; left: 0px; top: 4388px; width: 1265px; height: 269px; box-sizing: border-box; max-width: none; max-height: none; min-width: 0; min-height: 0">
+    <div class="wrap" style="padding:56px 48px 40px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid rgba(255,255,255,.1);">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:26px;height:26px;border-radius:7px;background:#fff;display:flex;align-items:center;justify-content:center;">
+            <div style="width:11px;height:11px;border:2px solid var(--accent);border-radius:3px;"></div>
+          </div>
+          <span class="disp" style="font-weight:700;font-size:19px;letter-spacing:.16em;">CHROXEL</span>
+        </div>
+        <p style="color:rgba(255,255,255,.5);font-size:14px;max-width:280px;margin:16px 0 0;line-height:1.6;">Soluciones de software a medida. Diseño e ingeniería con atención absoluta al detalle.</p>
+      </div>
+      <div style="display:flex;gap:64px;">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <span class="mono" style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.06em;">NAVEGACIÓN</span>
+          <a href="#" style="color:rgba(255,255,255,.75);font-size:14px;" class="disp">Servicios</a>
+          <a href="#" style="color:rgba(255,255,255,.75);font-size:14px;" class="disp">Proyectos</a>
+          <a href="#" style="color:rgba(255,255,255,.75);font-size:14px;" class="disp">Método</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <span class="mono" style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.06em;">CONTACTO</span>
+          <a href="#" style="color:rgba(255,255,255,.75);font-size:14px;" class="disp">WhatsApp</a>
+          <a href="#" style="color:rgba(255,255,255,.75);font-size:14px;" class="disp">Correo</a>
+        </div>
+      </div>
+    </div>
+    <div class="wrap" style="padding:24px 48px;display:flex;justify-content:space-between;align-items:center;">
+      <span class="mono" style="font-size:11.5px;color:rgba(255,255,255,.35);">© 2026 CHROXEL</span>
+      <span class="mono" style="font-size:11.5px;color:rgba(255,255,255,.35);">Hecho con ingeniería y detalle</span>
+    </div>
+  </footer>
+
+<section class="sec" style="background: #fff; border-top: 1px solid var(--border-2); border-bottom: 1px solid var(--border-2); position: absolute; left: 45px; top: 1622px; width: 1171px; height: 1262px">
+    <div class="wrap">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+        <div>
+          <span class="ey">// Casos de éxito</span>
+          <h2 class="title">Proyectos que <span class="gold">funcionan</span>.</h2>
+        </div>
+        <a href="#" class="btn btn-ghost">Ver todos los proyectos</a>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:48px;">
+
+        <!-- card 1 -->
+        <div class="card" style="overflow:hidden;">
+          <div style="aspect-ratio:16/9;background:linear-gradient(135deg,#EEF1F4,#E3E7EC);position:relative;">
+            <div style="position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:34px 34px;opacity:.6;"></div>
+            <div style="position:absolute;left:22px;top:22px;" class="tag">e-commerce</div>
+          </div>
+          <div style="padding:24px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;">
+              <div>
+                <h3 class="disp" style="font-size:22px;font-weight:600;margin:0;">Plataforma Vértice</h3>
+                <p style="color:var(--muted);font-size:13.5px;margin:5px 0 0;">Vértice Retail · 2024</p>
+              </div>
+              <div style="text-align:right;">
+                <div class="disp gold" style="font-size:26px;font-weight:700;letter-spacing:-.02em;">+180%</div>
+                <div class="mono" style="font-size:10.5px;color:var(--muted);letter-spacing:.05em;">CONVERSIÓN</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:7px;margin-top:18px;flex-wrap:wrap;"><span class="tag">Next.js</span><span class="tag">Stripe</span><span class="tag">PostgreSQL</span></div>
+          </div>
+        </div>
+
+        <!-- card 2 -->
+        <div class="card" style="overflow:hidden;">
+          <div style="aspect-ratio:16/9;background:linear-gradient(135deg,#F1EEEA,#E7E0D6);position:relative;">
+            <div style="position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:34px 34px;opacity:.6;"></div>
+            <div style="position:absolute;left:22px;top:22px;" class="tag">saas</div>
+          </div>
+          <div style="padding:24px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;">
+              <div>
+                <h3 class="disp" style="font-size:22px;font-weight:600;margin:0;">Panel Meridian</h3>
+                <p style="color:var(--muted);font-size:13.5px;margin:5px 0 0;">Meridian SaaS · 2024</p>
+              </div>
+              <div style="text-align:right;">
+                <div class="disp gold" style="font-size:26px;font-weight:700;letter-spacing:-.02em;">−60%</div>
+                <div class="mono" style="font-size:10.5px;color:var(--muted);letter-spacing:.05em;">TIEMPO OPERATIVO</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:7px;margin-top:18px;flex-wrap:wrap;"><span class="tag">React</span><span class="tag">Node</span><span class="tag">AWS</span></div>
+          </div>
+        </div>
+
+        <!-- card 3 -->
+        <div class="card" style="overflow:hidden;">
+          <div style="aspect-ratio:16/9;background:linear-gradient(135deg,#ECF0EE,#DEE7E2);position:relative;">
+            <div style="position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:34px 34px;opacity:.6;"></div>
+            <div style="position:absolute;left:22px;top:22px;" class="tag">sistema interno</div>
+          </div>
+          <div style="padding:24px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;">
+              <div>
+                <h3 class="disp" style="font-size:22px;font-weight:600;margin:0;">ERP Quanta</h3>
+                <p style="color:var(--muted);font-size:13.5px;margin:5px 0 0;">Quanta Industrial · 2023</p>
+              </div>
+              <div style="text-align:right;">
+                <div class="disp gold" style="font-size:26px;font-weight:700;letter-spacing:-.02em;">12k+</div>
+                <div class="mono" style="font-size:10.5px;color:var(--muted);letter-spacing:.05em;">USUARIOS/MES</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:7px;margin-top:18px;flex-wrap:wrap;"><span class="tag">TypeScript</span><span class="tag">Prisma</span></div>
+          </div>
+        </div>
+
+        <!-- card 4 -->
+        <div class="card" style="overflow:hidden;">
+          <div style="aspect-ratio:16/9;background:linear-gradient(135deg,#F0EEF2,#E4E0EA);position:relative;">
+            <div style="position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:34px 34px;opacity:.6;"></div>
+            <div style="position:absolute;left:22px;top:22px;" class="tag">landing</div>
+          </div>
+          <div style="padding:24px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;">
+              <div>
+                <h3 class="disp" style="font-size:22px;font-weight:600;margin:0;">Sitio Nova Labs</h3>
+                <p style="color:var(--muted);font-size:13.5px;margin:5px 0 0;">Nova Labs · 2023</p>
+              </div>
+              <div style="text-align:right;">
+                <div class="disp gold" style="font-size:26px;font-weight:700;letter-spacing:-.02em;">100</div>
+                <div class="mono" style="font-size:10.5px;color:var(--muted);letter-spacing:.05em;">LIGHTHOUSE</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:7px;margin-top:18px;flex-wrap:wrap;"><span class="tag">Astro</span><span class="tag">Tailwind</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="mono" style="font-size:11.5px;color:var(--muted);margin-top:24px;text-align:center;">Contenido cargado dinámicamente desde Notion · métricas de ejemplo, reemplazar con datos reales</p>
+    </div>
+  </section></div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

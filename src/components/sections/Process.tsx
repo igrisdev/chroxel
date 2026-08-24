@@ -4,94 +4,91 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { revealOnScroll, refreshTriggersWhenReady } from "@/lib/animations";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const PROCESS_STEPS = [
   {
     num: "01",
-    phase: "Fase de Inicio",
     title: "Descubrimiento",
-    desc: "Inmersión total en tu visión para definir los cimientos de un proyecto extraordinario.",
+    desc: "Entendemos negocio, usuarios y requisitos técnicos antes de escribir una línea de código.",
   },
   {
     num: "02",
-    phase: "Fase Creativa",
-    title: "Conceptualización",
-    desc: "Arquitectura de información y diseño visual que respira tu identidad de marca.",
+    title: "Diseño",
+    desc: "Arquitectura de información, prototipos y un sistema de diseño listo para escalar.",
   },
   {
     num: "03",
-    phase: "Fase Técnica",
     title: "Ingeniería",
-    desc: "Código limpio, eficiente y escalable construido con las tecnologías más avanzadas.",
+    desc: "Código limpio y probado, con integración continua y revisiones en cada iteración.",
   },
   {
     num: "04",
-    phase: "Fase Final",
     title: "Lanzamiento",
-    desc: "Pulido final y despliegue estratégico para asegurar un impacto inmediato en el mercado.",
+    desc: "Despliegue estratégico, monitoreo y mejora continua tras salir a producción.",
   },
 ];
 
 export default function Process() {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
+  const container = useRef<HTMLElement>(null);
 
   useGSAP(
     () => {
-      if (!trackRef.current || !wrapperRef.current) return;
+      revealOnScroll(".reveal-head", { y: 26, duration: 0.9 });
+      revealOnScroll(".step-row", { y: 30, stagger: 0.1 });
 
-      const scrollWidth = trackRef.current.scrollWidth - window.innerWidth;
-
-      gsap.to(trackRef.current, {
-        x: -scrollWidth,
-        ease: "none",
+      // Línea del timeline dibujándose con el scroll
+      gsap.to(".timeline-line", {
         scrollTrigger: {
-          trigger: wrapperRef.current,
-          pin: true,
-          scrub: 0.8,
-          end: () => "+=" + scrollWidth,
+          trigger: ".timeline",
+          start: "top 75%",
+          end: "bottom 75%",
+          scrub: true,
         },
+        scaleY: 1,
+        ease: "none",
       });
+
+      refreshTriggersWhenReady(container.current);
     },
-    { scope: wrapperRef },
+    { scope: container },
   );
 
   return (
-    <section
-      id="process-wrapper"
-      ref={wrapperRef}
-      className="relative bg-luxury-bg border-y border-luxury-border overflow-hidden"
-    >
-      <div
-        id="process-track"
-        ref={trackRef}
-        className="flex flex-row w-[400vw] h-[100dvh]"
-      >
-        {PROCESS_STEPS.map((step, idx) => (
-          <div
-            key={idx}
-            className="panel w-screen h-full flex flex-col justify-center px-8 md:px-32 relative border-r border-luxury-border/50 md:border-luxury-border overflow-hidden"
-          >
-            <div className="relative z-10 max-w-2xl flex flex-col">
-              {/* Número integrado al flujo normal en block */}
-              <div className="block text-[6rem] md:text-[10rem] font-display font-bold text-luxury-accent opacity-[0.25] select-none leading-none italic mb-4">
-                {step.num}
-              </div>
+    <section id="process-wrapper" ref={container} className="py-[120px]">
+      <div className="max-w-[1180px] mx-auto px-6 md:px-12">
+        <span className="reveal-head block font-mono text-xs tracking-[0.14em] uppercase text-luxury-accent-2">
+          {"// Cómo trabajamos"}
+        </span>
+        <h2 className="reveal-head font-display text-4xl md:text-[46px] font-bold tracking-[-0.025em] leading-[1.06] mt-3.5">
+          Un método, cuatro fases.
+        </h2>
 
-              <p className="text-luxury-accent font-display font-bold tracking-widest mb-4 uppercase text-sm">
-                {step.phase}
-              </p>
-              <h3 className="text-4xl md:text-6xl font-bold text-luxury-ink mb-6 md:mb-8 tracking-tighter">
+        <div className="timeline relative mt-[52px] border-t border-luxury-border">
+          {/* Línea vertical animada */}
+          <div className="absolute left-[59px] top-0 bottom-0 w-px hidden md:block bg-luxury-border">
+            <div className="timeline-line absolute inset-0 bg-luxury-accent origin-top scale-y-0" />
+          </div>
+
+          {PROCESS_STEPS.map((step) => (
+            <div
+              key={step.num}
+              className="step-row grid grid-cols-1 md:grid-cols-[120px_1fr_1fr] gap-4 md:gap-8 py-[30px] border-b border-luxury-border md:items-baseline"
+            >
+              <span className="font-display text-luxury-accent-2 text-[15px] font-semibold relative z-10">
+                {step.num}
+              </span>
+              <h3 className="font-display text-2xl font-semibold">
                 {step.title}
               </h3>
-              <p className="text-luxury-slate text-xl md:text-2xl leading-relaxed font-light italic">
+              <p className="text-luxury-slate text-[15px] leading-relaxed">
                 {step.desc}
               </p>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

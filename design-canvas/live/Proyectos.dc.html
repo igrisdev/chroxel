@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <style>
+    :root{
+      --bg:#FAFAFA; --card:#FFFFFF; --ink:#1F2937; --ink-900:#131A24;
+      --slate:#4B5563; --muted:#6B7280; --border-2:#E5E7EB; --border:#E9E7E2;
+      --accent:#C5A059; --accent-2:#B0894A; --accent-soft:rgba(197,160,89,0.10);
+      --disp:'Space Grotesk',sans-serif; --body:'Inter',sans-serif; --mono:'JetBrains Mono',monospace;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;}
+    a{color:var(--accent);text-decoration:none;} a:hover{color:var(--accent-2);}
+    .wrap{max-width:1180px;margin:0 auto;padding:0 48px;}
+    .disp{font-family:var(--disp);} .mono{font-family:var(--mono);}
+    .gold{color:var(--accent-2);}
+    .tag{display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:7px;background:#fff;border:1px solid var(--border-2);font-family:var(--mono);font-size:11.5px;font-weight:500;color:var(--slate);}
+    .card{background:var(--card);border:1px solid var(--border-2);border-radius:16px;}
+    .chip{display:inline-flex;align-items:center;height:36px;padding:0 16px;border-radius:9px;font-family:var(--disp);font-weight:500;font-size:13.5px;cursor:pointer;border:1px solid var(--border-2);background:#fff;color:var(--slate);}
+    .chip.on{background:var(--ink-900);color:#fff;border-color:var(--ink-900);}
+  </style>
+</helmet>
+
+<div style="background:var(--bg);min-height:100%;">
+
+  <!-- NAV -->
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(250,250,250,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-2);">
+    <div class="wrap" style="height:72px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:26px;height:26px;border-radius:7px;background:var(--ink-900);display:flex;align-items:center;justify-content:center;">
+          <div style="width:11px;height:11px;border:2px solid var(--accent);border-radius:3px;"></div>
+        </div>
+        <span class="disp" style="font-weight:700;font-size:19px;letter-spacing:.16em;">CHROXEL</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:34px;">
+        <a href="#" class="disp" style="color:var(--slate);font-size:14px;font-weight:500;">Servicios</a>
+        <a href="#" class="disp" style="color:var(--ink);font-size:14px;font-weight:600;">Proyectos</a>
+        <a href="#" class="disp" style="color:var(--slate);font-size:14px;font-weight:500;">Método</a>
+        <a href="#" class="disp" style="display:inline-flex;align-items:center;height:42px;padding:0 20px;border-radius:10px;background:var(--ink-900);color:#fff;font-weight:600;">Iniciar proyecto</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <section style="border-bottom:1px solid var(--border-2);">
+    <div class="wrap" style="padding:64px 48px 40px;">
+      <a href="#" class="mono gold" style="font-size:12px;letter-spacing:.06em;display:inline-flex;align-items:center;gap:6px;">← VOLVER AL INICIO</a>
+      <h1 class="disp" style="font-size:52px;font-weight:700;letter-spacing:-.03em;margin:22px 0 0;">Todos los <span class="gold">proyectos</span></h1>
+      <p style="color:var(--slate);font-size:18px;font-weight:300;max-width:520px;margin:14px 0 0;line-height:1.6;">Portafolio completo, cargado en tiempo real desde nuestra base de datos de proyectos.</p>
+
+      <!-- Filters -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:36px;flex-wrap:wrap;gap:16px;">
+        <div style="display:flex;gap:9px;flex-wrap:wrap;">
+          <span class="chip on">Todos</span>
+          <span class="chip">Web</span>
+          <span class="chip">SaaS</span>
+          <span class="chip">E-commerce</span>
+          <span class="chip">Sistemas internos</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;color:var(--muted);" class="mono">
+          <span style="font-size:12px;">12 proyectos</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRID -->
+  <section style="padding:48px 0 96px;">
+    <div class="wrap">
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;">
+        <sc-for list="{{items}}" as="p" hint-placeholder-count="6">
+          <div class="card" style="overflow:hidden;">
+            <div style="aspect-ratio:16/10;background:{{p.grad}};position:relative;">
+              <div style="position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:30px 30px;opacity:.6;"></div>
+              <div style="position:absolute;left:18px;top:18px;" class="tag">{{p.category}}</div>
+            </div>
+            <div style="padding:22px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+                <div>
+                  <h3 class="disp" style="font-size:19px;font-weight:600;margin:0;">{{p.title}}</h3>
+                  <p style="color:var(--muted);font-size:13px;margin:4px 0 0;">{{p.client}} · {{p.year}}</p>
+                </div>
+                <div class="disp gold" style="font-size:20px;font-weight:700;letter-spacing:-.02em;white-space:nowrap;">{{p.stat}}</div>
+              </div>
+              <div style="display:flex;gap:6px;margin-top:16px;flex-wrap:wrap;">
+                <sc-for list="{{p.tech}}" as="t" hint-placeholder-count="2">
+                  <span class="tag">{{t}}</span>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    const items = [
+      { title:'Plataforma Vértice', client:'Vértice Retail', year:'2024', category:'e-commerce', stat:'+180%', tech:['Next.js','Stripe','PostgreSQL'], grad:'linear-gradient(135deg,#EEF1F4,#E3E7EC)' },
+      { title:'Panel Meridian', client:'Meridian SaaS', year:'2024', category:'saas', stat:'−60%', tech:['React','Node','AWS'], grad:'linear-gradient(135deg,#F1EEEA,#E7E0D6)' },
+      { title:'ERP Quanta', client:'Quanta Industrial', year:'2023', category:'sistema interno', stat:'12k+', tech:['TypeScript','Prisma'], grad:'linear-gradient(135deg,#ECF0EE,#DEE7E2)' },
+      { title:'Sitio Nova Labs', client:'Nova Labs', year:'2023', category:'landing', stat:'100', tech:['Astro','Tailwind'], grad:'linear-gradient(135deg,#F0EEF2,#E4E0EA)' },
+      { title:'App Acme Corp', client:'Acme Corp', year:'2023', category:'web', stat:'4.9★', tech:['Next.js','Supabase'], grad:'linear-gradient(135deg,#EEF1F4,#E3E7EC)' },
+      { title:'Portal Meridian', client:'Meridian SaaS', year:'2022', category:'saas', stat:'+90%', tech:['Vue','Go'], grad:'linear-gradient(135deg,#F1EEEA,#E7E0D6)' },
+    ];
+    return { items };
+  }
+}
+</script>
+</body>
+</html>
