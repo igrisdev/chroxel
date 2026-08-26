@@ -118,6 +118,20 @@ function cleanTitle(title: string): string {
   return title.replace(/_/g, " ");
 }
 
+/**
+ * URL propia y estable para una imagen de Notion.
+ *
+ * Devuelve "" si la propiedad no tiene archivo, para que la interfaz siga
+ * pudiendo comprobar su existencia con una condición simple.
+ */
+function imageProxyUrl(
+  page: PageObjectResponse,
+  kind: keyof typeof IMAGE_PROPERTIES,
+): string {
+  const hasFile = getFiles(page.properties, IMAGE_PROPERTIES[kind]);
+  return hasFile ? `/api/image/${page.id}/${kind}` : "";
+}
+
 function mapPageToProject(page: PageObjectResponse): IProject {
   const { properties } = page;
 
@@ -126,7 +140,7 @@ function mapPageToProject(page: PageObjectResponse): IProject {
     slug: generateSlug(getTitle(properties, "Titulo")),
     category: getSelect(properties, "Seleccionar"),
     title: cleanTitle(getTitle(properties, "Titulo")),
-    img: getFiles(properties, "Imagen Presentación"),
+    img: imageProxyUrl(page, "cover"),
     client: getPlainText(properties, "Nombre Empresa"),
     url_web: getUrl(properties, "Pagina Web Empresa"),
     year: extractYear(getDate(properties, "Fecha Inicio")),
@@ -154,7 +168,7 @@ function mapPageToProjectDetail(page: PageObjectResponse): IProjectDetail {
       role: getPlainText(properties, "Cargo Testimonio"),
     },
     github_url: getUrl(properties, "Link GitHub") || undefined,
-    logo_url: getFiles(properties, "Logo Empresa") || undefined,
+    logo_url: imageProxyUrl(page, "logo") || undefined,
     framework_icon:
       getSelect(properties, "Icono Framework Principal") || undefined,
     framework_url: getUrl(properties, "Link Pagina Framework") || undefined,
@@ -192,4 +206,38 @@ export async function getProjectBySlug(
   if (!page) return null;
 
   return mapPageToProjectDetail(page);
+}
+
+/** Propiedades de Notion que contienen imágenes, expuestas vía proxy. */
+export const IMAGE_PROPERTIES = {
+  cover: "Imagen Presentación",
+  logo: "Logo Empresa",
+} as const;
+
+export type ImageKind = keyof typeof IMAGE_PROPERTIES;
+
+/**
+ * Devuelve la URL firmada *actual* de una imagen de Notion.
+ *
+ * Notion firma sus enlaces de S3 con una validez de 1 hora. Como las páginas se
+ * cachean, una URL incrustada en el HTML acaba caducando y la imagen se rompe;
+ * por eso el navegador pide siempre `/api/image/...` y es el servidor quien
+ * resuelve la firma vigente en cada petición.
+ */
+export async function getNotionImageUrl(
+  pageId: string,
+  kind: ImageKind,
+): Promise<string | null> {
+  const res = await fetch(`https://api.notion.com/v1/pages/${pageId}`, {
+    headers: {
+      Authorization: `Bearer ${NOTION_API_KEY}`,
+      "Notion-Version": "2022-06-28",
+    },
+    cache: "no-store",
+  });
+
+  if (!res.ok) return null;
+
+  const page = (await res.json()) as PageObjectResponse;
+  return getFiles(page.properties, IMAGE_PROPERTIES[kind]) || null;
 }

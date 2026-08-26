@@ -5,8 +5,9 @@ import { JsonLd, breadcrumbSchema } from "@/components/seo/JsonLd";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 import ProjectDetail from "./ProjectDetail";
 
-// HTML estático regenerado cada hora: rápido para el usuario y para Googlebot.
-export const revalidate = 3600;
+// HTML estático revalidado cada minuto: rápido para el usuario y para
+// Googlebot, y los cambios en Notion se reflejan casi de inmediato.
+export const revalidate = 60;
 
 /** Pre-genera una página por proyecto para que existan en el build. */
 export async function generateStaticParams() {

@@ -7,10 +7,10 @@ import { usePathname } from "next/navigation";
 import logo from "../../../public/chroxel_logo_v2.png";
 
 const NAV_LINKS = [
-  { name: "Servicios", href: "#services" },
-  { name: "Proyectos", href: "#projects" },
-  { name: "Método", href: "#process-wrapper" },
-  // { name: "Stack", href: "#stats" },
+  { name: "Servicios", href: "/#services" },
+  { name: "Proyectos", href: "/#projects" },
+  { name: "Método", href: "/#process-wrapper" },
+  // { name: "Stack", href: "/#stats" },
 ];
 
 export default function Navbar() {
@@ -74,7 +74,7 @@ export default function Navbar() {
                   </Link>
                 ))}
                 <Link
-                  href="#contact"
+                  href="/#contact"
                   className="inline-flex items-center h-[42px] px-5 rounded-[10px] bg-luxury-accent text-[#151107] font-display font-semibold text-sm hover:bg-luxury-accent-2 transition-colors"
                 >
                   Iniciar proyecto
@@ -128,7 +128,7 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="#contact"
+              href="/#contact"
               onClick={() => setIsOpen(false)}
               className="mt-4 inline-flex items-center h-[50px] px-7 rounded-[11px] bg-luxury-accent text-[#151107] font-display font-semibold"
             >

@@ -5,9 +5,9 @@ import { IProject } from "@/lib/data";
 import { JsonLd, breadcrumbSchema } from "@/components/seo/JsonLd";
 import ProjectsGrid from "./ProjectsGrid";
 
-// Se regenera cada hora: Google recibe HTML estático y rápido, y los proyectos
-// nuevos de Notion aparecen solos sin volver a desplegar.
-export const revalidate = 3600;
+// Se revalida cada minuto: Google recibe HTML estático y rápido, y los
+// proyectos nuevos de Notion aparecen solos sin volver a desplegar.
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Portafolio de proyectos de software",

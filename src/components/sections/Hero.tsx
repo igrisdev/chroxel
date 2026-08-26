@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -72,21 +73,21 @@ export default function Hero() {
         </p>
 
         <div className="hero-el flex flex-wrap gap-3 mt-9">
-          <a
-            href="#contact"
+          <Link
+            href="/#contact"
             className="inline-flex items-center gap-2 h-[50px] px-6 rounded-[11px] bg-luxury-accent text-[#151107] font-display font-semibold text-[15px] hover:bg-luxury-accent-2 hover:-translate-y-0.5 transition-all"
           >
             Agenda una consultoría
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </a>
-          <a
-            href="#projects"
+          </Link>
+          <Link
+            href="/#projects"
             className="inline-flex items-center h-[50px] px-6 rounded-[11px] bg-transparent text-luxury-ink border border-luxury-line font-display font-semibold text-[15px] hover:border-luxury-accent transition-all"
           >
             Ver proyectos
-          </a>
+          </Link>
         </div>
       </div>
 
